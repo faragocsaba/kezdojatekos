@@ -1,0 +1,2 @@
+# kezdojatekos
+Kezdőjátékos
