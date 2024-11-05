@@ -1,0 +1,58 @@
+table, th, td {
+  border: 1px solid;
+  text-align: center;
+}
+
+.button {
+  width: 220px;
+  height: 45px;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  font-size: 24px;	
+  font-weight: bold;
+  border: 1px solid black;
+  border-radius: 5px;
+  color: black;
+  background-color: white;
+  outline: 0;
+  text-align: center;
+}
+
+.starttext {
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  font-size: 24px;	
+  font-weight: bold;
+  color: red;
+}
+
+.question {
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  font-size: 24px;	
+  font-weight: bold;
+  color: red;
+  text-align: center;
+}
+
+.explanation {
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  font-size: 18px;	
+  font-weight: bold;
+  color: red;
+  text-align: center;
+}
+
+.input {
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  width: 35px;
+  font-size: 20px;	
+  font-weight: bold;
+  color: green;
+  text-transform: uppercase;
+}
+
+.error {
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  font-size: 14px;	
+  color: red;
+  line-height: 14px;
+}
+
