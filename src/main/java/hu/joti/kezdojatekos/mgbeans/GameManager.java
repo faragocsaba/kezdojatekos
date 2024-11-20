@@ -31,6 +31,7 @@ public class GameManager implements Serializable {
 
   private List<Question> recentQuestions;
   private Question lastQuestion;
+  private int questionIndex;
 
   // Az összes kérdés hány százalékának kell elfogynia ahhoz, hogy egy kérdés ismét előfordulhasson
   private static final double QUESTION_REPEAT_RATE = 0.3;
@@ -42,27 +43,43 @@ public class GameManager implements Serializable {
     LOGGER.trace("GameManager starting");
   }
 
-  public void nextQuestion(){
-    List<Question> availQuestions = new ArrayList<>(questionManager.getAllQuestions());
-    int allSize = availQuestions.size();
-    LOGGER.debug("Összes kérdés száma: " + allSize);
-    LOGGER.debug("Már megkérdezve: " + recentQuestions.size());
-    availQuestions.removeAll(recentQuestions);
-    LOGGER.debug("Elérhető kérdések száma: " + availQuestions.size());
-    
-    Random rnd = new Random();
-    int rndIndex = rnd.nextInt(availQuestions.size());
-    LOGGER.debug("Véletlen szám: " + rndIndex);
-    lastQuestion = availQuestions.get(rndIndex);
-    LOGGER.debug(lastQuestion.getText()); 
-    
-    recentQuestions.add(lastQuestion);
-    LOGGER.debug("Már megkérdezve 2: " + recentQuestions.size());
-    LOGGER.debug("Ismétlődési határ: " + ((int)(QUESTION_REPEAT_RATE * allSize)));
-    if (recentQuestions.size() > (int)(QUESTION_REPEAT_RATE * allSize)){
-      LOGGER.debug("Kérdés ismét jöhet: " + recentQuestions.get(0).getText());
-      recentQuestions.remove(0);
+  public void prevQuestion(){
+    if (questionIndex > 1){
+      questionIndex--;
+      lastQuestion = recentQuestions.get(questionIndex - 1);
     }
+  }
+    
+  public void nextQuestion(){
+    if (questionIndex < recentQuestions.size()){
+      questionIndex++;
+      lastQuestion = recentQuestions.get(questionIndex - 1);
+    } else {
+    
+      List<Question> availQuestions = new ArrayList<>(questionManager.getAllQuestions());
+      int allSize = availQuestions.size();
+      LOGGER.debug("Összes kérdés száma: " + allSize);
+      LOGGER.debug("Már megkérdezve: " + recentQuestions.size());
+      availQuestions.removeAll(recentQuestions);
+      LOGGER.debug("Elérhető kérdések száma: " + availQuestions.size());
+
+      Random rnd = new Random();
+      int rndIndex = rnd.nextInt(availQuestions.size());
+      LOGGER.debug("Véletlen szám: " + rndIndex);
+      lastQuestion = availQuestions.get(rndIndex);
+      LOGGER.debug(lastQuestion.getText()); 
+
+      recentQuestions.add(lastQuestion);
+      questionIndex++;
+      
+      LOGGER.debug("Már megkérdezve 2: " + recentQuestions.size());
+      LOGGER.debug("Ismétlődési határ: " + ((int)(QUESTION_REPEAT_RATE * allSize)));
+      if (recentQuestions.size() > (int)(QUESTION_REPEAT_RATE * allSize)){
+        LOGGER.debug("Kérdés ismét jöhet: " + recentQuestions.get(0).getText());
+        recentQuestions.remove(0);
+        questionIndex--;
+      }
+    }  
   };
   
   public QuestionManager getQuestionManager() {
@@ -74,11 +91,11 @@ public class GameManager implements Serializable {
   }
 
   public String getLastQuestionText(){
-    return lastQuestion.getText();
+    return lastQuestion.getText().toUpperCase();
   }
 
   public String getLastQuestionExplanation(){
-    return lastQuestion.getExplanation();
+    return lastQuestion.getExplanation().toUpperCase();
   }
 
   public Question getLastQuestion() {
@@ -99,6 +116,14 @@ public class GameManager implements Serializable {
 
   public void setRecentQuestions(List<Question> recentQuestions) {
     this.recentQuestions = recentQuestions;
+  }
+
+  public int getQuestionIndex() {
+    return questionIndex;
+  }
+
+  public void setQuestionIndex(int questionIndex) {
+    this.questionIndex = questionIndex;
   }
   
 }

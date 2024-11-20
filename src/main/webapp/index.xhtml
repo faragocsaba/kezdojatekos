@@ -1,55 +1,106 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
   <h:head>
     <title>Kezdőjátékos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+    <style>               
+      .bgimage{
+        background-image:url(#{request.contextPath}/resources/images/background2.jpg);
+        background-repeat: no-repeat;
+        background-size: auto;
+        background-position: top;
+      }        
+    </style>   
   </h:head>
-  <h:body style="background-image:url(#{facesContext.externalContext.requestContextPath}/images/background.jpg)">
+  <h:body styleClass="bgimage">
     <h:outputStylesheet library="css" name="style.css" />
 
+    <h:form id="pageform"  acceptcharset="UTF-8" enctype="multipart/form-data">
+      <!--      <div class="header">
+              <h1>Kezdőjátékos</h1>
+            </div>        -->
+      <h:panelGroup id="pg_full">
+        <h:panelGroup id="pg_welcome" rendered="#{gameManager.getQuestionNumber() == 0}">
+          <p align="center"  class="fullpg">
+            <table id="tblStart" align="center" class="starttext" style="width:80%; height: 100%; max-width: 800px; line-height: 1.5; margin: auto;">
+              <tr>
+                <td>  
+                  <div style="height: 50px;">
+                    <br/>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div style="height: 350px;">
+                    KI KEZDJE A JÁTÉKOT?<br/><br/>
+                    DÖNTSÉTEK EL <br/>
+                    EGY ÉRDEKES KÉRDÉSSEL!<br/><br/>
+                  </div>
+                </td>
+              </tr>  
+              <tr style="line-height: 60px">
+                <td align="center">
+                  <h:commandButton id="btn_start" class="button" value="JÖHET A KÉRDÉS!"
+                                   action="#{gameManager.nextQuestion()}">
+                    <f:ajax render="pg_full"/>
+                  </h:commandButton>                            
+                </td>
+              </tr>  
+            </table>    
+          </p>    
+        </h:panelGroup>
 
-      <h:form rendered="#{gameManager.getQuestionNumber() == 0}">
+        <h:panelGroup id="pg_game" rendered="#{gameManager.getQuestionNumber() > 0}">
           <p align="center">
-              <table id="tblStart" align="center" class="starttext" style="width:80%; line-height: 1.5">
-                  <tr>
-                      <td>
-                          Üdvözöllek!<br/><br/>
-                          A következő kérdés(ek) alapján eldönthetitek,<br/>
-                          melyikőtök legyen a kezdőjátékos.<br/><br/>
-                      </td>
-                  </tr>  
-                  <tr style="line-height: 60px">
-                      <td align="center">
-                          <h:commandButton id="btn_start" class="button" value="Jöhet a kérdés!"
-                                           action="#{gameManager.nextQuestion()}"/>
-                      </td>
-                  </tr>  
-              </table>    
+            <table id="tblStart" align="center" class="starttext" style="width:80%; height: 100%; max-width: 800px; line-height: 1.5; margin: auto;">
+              <tr>
+                <td>  
+                  <div style="height: 50px;">
+                    <br/>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div style="height: 140px;">
+                    <h:outputText id="ot_question" class="question" value="#{gameManager.getLastQuestionText()}"/>
+                  </div>
+                </td>
+              </tr>  
+              <tr>
+                <td>
+                  <div style="height: 220px;">
+                    <h:outputText id="ot_explanation" class="explanation" value="#{gameManager.getLastQuestionExplanation()}"/>
+                  </div>
+                </td>
+              </tr>  
+              <tr style="line-height: 45px">
+                <td align="center">
+                  <div style="max-width: 400px;margin: auto;">
+                  <h:commandButton id="btn_prev" class="button" style="width: 50px; float: left;" value="&#8617;" disabled="#{gameManager.getQuestionIndex() eq 1}"
+                                   action="#{gameManager.prevQuestion()}">
+                    <f:ajax render="pg_game"/>
+                  </h:commandButton>                      
+                  <h:commandButton id="btn_new" class="button" style="width: 220px;" value="ÚJABB KÉRDÉS" disabled="#{gameManager.getQuestionIndex() lt gameManager.getQuestionNumber()}"
+                                   action="#{gameManager.nextQuestion()}">
+                    <f:ajax render="pg_game"/>
+                  </h:commandButton>                      
+                  <h:commandButton id="btn_next" class="button" style="width: 50px; float: right;" value="&#8618;" disabled="#{gameManager.getQuestionIndex() eq gameManager.getQuestionNumber()}"
+                                   action="#{gameManager.nextQuestion()}">
+                    <f:ajax render="pg_game"/>
+                  </h:commandButton>             
+                  </div>
+                </td>
+              </tr>  
+            </table>    
           </p>    
-      </h:form>
-      <h:form rendered="#{gameManager.getQuestionNumber() > 0}">
-          <p align="center">
-              <table id="tblStart" align="center" class="starttext" style="width:80%; line-height: 1.5; border-width: 2px; border-color: black">
-                  <tr>
-                      <td>
-                        <h:outputText id="ot_question" class="question" value="#{gameManager.getLastQuestion().text}"/>
-                      </td>
-                  </tr>  
-                  <tr>
-                      <td>
-                        <h:outputText id="ot_explanation" class="explanation" value="#{gameManager.getLastQuestion().explanation}"/>
-                      </td>
-                  </tr>  
-                  <tr style="line-height: 60px">
-                      <td align="center">
-                          <h:commandButton id="btn_next" class="button" value="Következő kérdés"
-                                           action="#{gameManager.nextQuestion()}"/>
-                      </td>
-                  </tr>  
-              </table>    
-          </p>    
-      </h:form>
+        </h:panelGroup>
+      </h:panelGroup>              
+    </h:form>
   </h:body>
 </html>
 
