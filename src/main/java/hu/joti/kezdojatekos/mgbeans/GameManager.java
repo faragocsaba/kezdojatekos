@@ -49,7 +49,12 @@ public class GameManager implements Serializable {
       lastQuestion = recentQuestions.get(questionIndex - 1);
     }
   }
-    
+
+  public void newQuestion(){
+     questionIndex = recentQuestions.size();
+     nextQuestion();
+  }
+
   public void nextQuestion(){
     if (questionIndex < recentQuestions.size()){
       questionIndex++;
@@ -91,11 +96,17 @@ public class GameManager implements Serializable {
   }
 
   public String getLastQuestionText(){
-    return lastQuestion.getText().toUpperCase();
+    if (!(lastQuestion.getExplanation().isEmpty()))
+      return lastQuestion.getText().toUpperCase() + "\u00A0" + "*";
+    else 
+      return lastQuestion.getText().toUpperCase();
   }
 
   public String getLastQuestionExplanation(){
-    return lastQuestion.getExplanation().toUpperCase();
+    String explanation = lastQuestion.getExplanation().toUpperCase();
+    if (!explanation.isEmpty())
+      explanation = "* " + explanation;
+    return explanation;
   }
 
   public Question getLastQuestion() {

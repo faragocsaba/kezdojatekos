@@ -10,8 +10,9 @@
       .bgimage{
         background-image:url(#{request.contextPath}/resources/images/background2.jpg);
         background-repeat: no-repeat;
-        background-size: auto;
         background-position: top;
+        background-size: cover;     
+        min-height: 100vh;
       }        
     </style>   
   </h:head>
@@ -25,7 +26,7 @@
       <h:panelGroup id="pg_full">
         <h:panelGroup id="pg_welcome" rendered="#{gameManager.getQuestionNumber() == 0}">
           <p align="center"  class="fullpg">
-            <table id="tblStart" align="center" class="starttext" style="width:80%; height: 100%; max-width: 800px; line-height: 1.5; margin: auto;">
+            <table id="tblStart" align="center" class="starttext" style="width:90%; height: 100%; max-width: 940px; line-height: 1.5; margin: auto;">
               <tr>
                 <td>  
                   <div style="height: 50px;">
@@ -35,7 +36,7 @@
               </tr>
               <tr>
                 <td>
-                  <div style="height: 350px;">
+                  <div style="height: 310px;">
                     KI KEZDJE A JÁTÉKOT?<br/><br/>
                     DÖNTSÉTEK EL <br/>
                     EGY ÉRDEKES KÉRDÉSSEL!<br/><br/>
@@ -56,7 +57,7 @@
 
         <h:panelGroup id="pg_game" rendered="#{gameManager.getQuestionNumber() > 0}">
           <p align="center">
-            <table id="tblStart" align="center" class="starttext" style="width:80%; height: 100%; max-width: 800px; line-height: 1.5; margin: auto;">
+            <table id="tblStart" align="center" class="starttext" style="width:90%; height: 100%; max-width: 940px; line-height: 1.5; margin: auto;">
               <tr>
                 <td>  
                   <div style="height: 50px;">
@@ -66,15 +67,17 @@
               </tr>
               <tr>
                 <td>
-                  <div style="height: 140px;">
-                    <h:outputText id="ot_question" class="question" value="#{gameManager.getLastQuestionText()}"/>
+                  <div style="height: 140px;position: relative;">
+                    <p class="center">
+                      <h:outputText id="ot_question" class="question" value="#{gameManager.getLastQuestionText()}"/>
+                    </p>
                   </div>
                 </td>
               </tr>  
               <tr>
                 <td>
-                  <div style="height: 220px;">
-                    <h:outputText id="ot_explanation" class="explanation" value="#{gameManager.getLastQuestionExplanation()}"/>
+                  <div style="height: 220px;position: relative;padding: 20px;">
+                      <h:outputText id="ot_explanation" class="explanation" value="#{gameManager.getLastQuestionExplanation()}"/>
                   </div>
                 </td>
               </tr>  
@@ -85,8 +88,8 @@
                                    action="#{gameManager.prevQuestion()}">
                     <f:ajax render="pg_game"/>
                   </h:commandButton>                      
-                  <h:commandButton id="btn_new" class="button" style="width: 220px;" value="ÚJABB KÉRDÉS" disabled="#{gameManager.getQuestionIndex() lt gameManager.getQuestionNumber()}"
-                                   action="#{gameManager.nextQuestion()}">
+                  <h:commandButton id="btn_new" class="button" style="width: 160px;" value="ÚJ KÉRDÉS"
+                                   action="#{gameManager.newQuestion()}">
                     <f:ajax render="pg_game"/>
                   </h:commandButton>                      
                   <h:commandButton id="btn_next" class="button" style="width: 50px; float: right;" value="&#8618;" disabled="#{gameManager.getQuestionIndex() eq gameManager.getQuestionNumber()}"

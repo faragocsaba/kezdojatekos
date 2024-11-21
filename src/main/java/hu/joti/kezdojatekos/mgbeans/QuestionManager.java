@@ -5,6 +5,7 @@
  */
 package mgbeans;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +27,7 @@ import org.apache.logging.log4j.Logger;
 @ManagedBean
 @Named(value = "questionManager")
 @ApplicationScoped
-public class QuestionManager {
+public class QuestionManager implements Serializable {
 
   private List<Question> allQuestions;
   private List<Category> categories;

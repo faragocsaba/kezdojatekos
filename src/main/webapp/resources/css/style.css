@@ -1,10 +1,21 @@
+@import url('https://fonts.googleapis.com/css?family=Itim&display=swap');
+
 .header {
   background-color: #ffffff;
   color: #000000;
   font-size: 60px;
-  font: Symbola, serif;
+  font-family: 'Itim', cursive;
   padding: 15px;
   text-align: center;
+}
+
+.center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 
 .fullpg {
@@ -20,7 +31,7 @@ table, th, td {
 .button {
   width: 280px;
   height: 45px;
-  font-family: "Comic Sans MS", cursive, sans-serif;
+  font-family: 'Itim', cursive;
   font-size: 24px;	
   font-weight: bold;
   border: 1px solid black;
@@ -29,6 +40,7 @@ table, th, td {
   background: #ffffff linear-gradient(to bottom, rgba(255,255,255,0.8) 0%,rgba(255,255,255,0) 30%);
   outline: 0;
   text-align: center;
+  opacity: 0.8;
 }
 
 .button:hover {
@@ -42,14 +54,14 @@ table, th, td {
 }
 
 .starttext {
-  font-family: "Comic Sans MS", cursive, sans-serif;
+  font-family: 'Itim', cursive;
   font-size: 24px;	
   font-weight: bold;
   color: black;
 }
 
 .question {
-  font-family: "Comic Sans MS", cursive, sans-serif;
+  font-family: 'Itim', cursive;
   font-size: 24px;	
   font-weight: bold;
   color: black;
@@ -57,15 +69,15 @@ table, th, td {
 }
 
 .explanation {
-  font-family: "Comic Sans MS", cursive, sans-serif;
-  font-size: 18px;	
+  font-family: 'Itim', cursive;
+  font-size: 15px;	
   font-weight: bold;
   color: black;
   text-align: center;
 }
 
 .input {
-  font-family: "Comic Sans MS", cursive, sans-serif;
+  font-family: 'Itim', cursive;
   width: 35px;
   font-size: 20px;	
   font-weight: bold;
@@ -74,7 +86,7 @@ table, th, td {
 }
 
 .error {
-  font-family: "Comic Sans MS", cursive, sans-serif;
+  font-family: 'Itim', cursive;
   font-size: 14px;	
   color: red;
   line-height: 14px;
