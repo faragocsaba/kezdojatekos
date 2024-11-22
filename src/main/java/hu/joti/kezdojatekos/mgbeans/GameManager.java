@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Level;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import model.Question;
@@ -61,18 +62,45 @@ public class GameManager implements Serializable {
       lastQuestion = recentQuestions.get(questionIndex - 1);
     } else {
     
-      List<Question> availQuestions = new ArrayList<>(questionManager.getAllQuestions());
+      LOGGER.debug("questionIndex: " + questionIndex);
+      List<Question> availQuestions = new ArrayList<>(questionManager.getActiveQuestions());
       int allSize = availQuestions.size();
       LOGGER.debug("Összes kérdés száma: " + allSize);
       LOGGER.debug("Már megkérdezve: " + recentQuestions.size());
+
+      for (Question question : recentQuestions) {
+        availQuestions.removeIf(b -> b.getId() == question.getId());
+      }
+
       availQuestions.removeAll(recentQuestions);
       LOGGER.debug("Elérhető kérdések száma: " + availQuestions.size());
 
       Random rnd = new Random();
       int rndIndex = rnd.nextInt(availQuestions.size());
       LOGGER.debug("Véletlen szám: " + rndIndex);
-      lastQuestion = availQuestions.get(rndIndex);
+      Question rndQuestion = availQuestions.get(rndIndex);
+      try {
+        lastQuestion = (Question) rndQuestion.clone();
+      } catch (CloneNotSupportedException ex) {
+        LOGGER.error(ex.toString());
+      }
       LOGGER.debug(lastQuestion.getText()); 
+      
+      String newText;
+      int brStart = lastQuestion.getText().indexOf("[");
+      if (brStart >= 0){
+         LOGGER.debug("Van [ zárójel: " + lastQuestion.getText());
+         int brEnd = lastQuestion.getText().indexOf("]");
+         if (brEnd > brStart + 1){
+           String[] items = lastQuestion.getText().substring(brStart + 1, brEnd).split(";");
+
+           rndIndex = rnd.nextInt(items.length);
+           LOGGER.debug("Véletlen szám: " + rndIndex);
+           newText = lastQuestion.getText().substring(0, brStart) + items[rndIndex] + lastQuestion.getText().substring(brEnd + 1);
+           LOGGER.debug("Új kérdés: " + newText);
+           lastQuestion.setText(newText);
+         }
+      }  
 
       recentQuestions.add(lastQuestion);
       questionIndex++;

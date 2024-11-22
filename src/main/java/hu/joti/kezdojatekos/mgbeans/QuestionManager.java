@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.TreeMap;
 import javax.faces.bean.ApplicationScoped;
 import javax.inject.Named;
@@ -52,8 +53,56 @@ public class QuestionManager implements Serializable {
     }
 
     allQuestions = questionDao.findAllQuestions(categoryMap);
+
+    int brStart, brEnd;
+    String[] items;
+    String newText;
+    int maxId = 0;
+    List<Question> newQuestions = new ArrayList<>();
+
+    for (Question question : allQuestions) {
+      if (question.getId() > maxId) 
+        maxId = question.getId();
+    }
+
+    for (Question question : allQuestions) {
+      brStart = question.getText().indexOf("{");
+      if (brStart >= 0){
+        LOGGER.debug("Van zárójel: " + question.getText());
+        brEnd = question.getText().indexOf("}");
+        if (brEnd > brStart + 1){
+          items = question.getText().substring(brStart + 1, brEnd).split(";");
+          for (String item : items) {
+            LOGGER.debug("item: " + item);
+            newText = question.getText().substring(0, brStart) + item + question.getText().substring(brEnd + 1);
+            LOGGER.debug("newText: " + newText);
+            maxId++;
+            Question newQuestion = new Question(maxId, newText, question.getExplanation(), question.isActive(), question.isUnequivocal(), question.isIndiscreet(), question.getCategory());
+            newQuestions.add(question);
+          }
+          question.setActive(false);
+        }
+      }
+    }
+    
+    LOGGER.debug("Kérdések száma:" + allQuestions.size());
+    LOGGER.debug("Új kérdések száma:" + newQuestions.size());
+    allQuestions.addAll(newQuestions);
     LOGGER.debug("Kérdések száma:" + allQuestions.size());
 
+  }
+
+  public List<Question> getActiveQuestions() {
+    List<Question> questions = new ArrayList<>(allQuestions);
+    List<Question> inactQuestions = new ArrayList<>();
+
+    for (Question question : questions) {
+      if (!question.isActive())
+        inactQuestions.add(question);
+    }
+    
+    questions.removeAll(inactQuestions);
+    return questions;
   }
 
   public List<Question> getAllQuestions() {

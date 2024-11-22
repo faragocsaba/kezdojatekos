@@ -11,7 +11,7 @@ import java.io.Serializable;
 /**
  * @author Joti
  */
-public class Question implements Serializable {
+public class Question implements Serializable, Cloneable {
 
   private int id;
   private String text;
@@ -29,6 +29,11 @@ public class Question implements Serializable {
     this.unequivocal = unequivocal;
     this.indiscreet = indiscreet;
     this.category = category;
+  }
+
+  @Override
+  public Object clone() throws CloneNotSupportedException {
+    return super.clone(); //To change body of generated methods, choose Tools | Templates.
   }
 
   public int getId() {
