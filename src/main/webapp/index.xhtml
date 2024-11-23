@@ -62,7 +62,7 @@
 
         <h:panelGroup id="pg_game" rendered="#{gameManager.getQuestionNumber() > 0}">
           <p align="center">
-            <table id="tblStart" align="center" class="starttext" style="width:90%; height: 100%; max-width: 940px; line-height: 1.5; margin: auto;">
+            <table id="tblStart" align="center" class="starttext" style="width:90%; height: 100%; max-width: 1040px; line-height: 1.5; margin: auto;">
               <tr>
                 <td>  
                   <div style="height: 50px;">
@@ -72,17 +72,13 @@
               </tr>
               <tr>
                 <td>
-                  <div style="height: 140px;position: relative;">
+                  <div style="height: 400px;position: relative;">
                     <p class="center">
                       <h:outputText id="ot_question" class="question" value="#{gameManager.getLastQuestionText()}"/>
-                    </p>
-                  </div>
-                </td>
-              </tr>  
-              <tr>
-                <td>
-                  <div style="height: 220px;position: relative;padding: 20px;">
+                      <br/><br/>
                       <h:outputText id="ot_explanation" class="explanation" value="#{gameManager.getLastQuestionExplanation()}"/>
+                      <br/><br/><br/>
+                    </p>
                   </div>
                 </td>
               </tr>  
