@@ -5,7 +5,7 @@
               xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
 
     <factory>
-        <exception-handler-factory>hu.joti.betuparbaj.exception.CustomExceptionHandlerFactory</exception-handler-factory>
+        <exception-handler-factory>hu.joti.kezdojatekos.exception.CustomExceptionHandlerFactory</exception-handler-factory>
     </factory>
     <navigation-rule>
         <from-view-id>/error.xhtml</from-view-id>

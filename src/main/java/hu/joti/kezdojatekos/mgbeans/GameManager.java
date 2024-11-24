@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mgbeans;
+package hu.joti.kezdojatekos.mgbeans;
 
 import javax.inject.Named;
 import javax.faces.bean.SessionScoped;
@@ -11,10 +11,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.logging.Level;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import model.Question;
+import hu.joti.kezdojatekos.model.Question;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

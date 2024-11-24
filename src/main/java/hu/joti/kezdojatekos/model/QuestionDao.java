@@ -1,4 +1,4 @@
-package model;
+package hu.joti.kezdojatekos.model;
 
 import java.util.List;
 import java.util.Map;

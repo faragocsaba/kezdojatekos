@@ -3,21 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mgbeans;
+package hu.joti.kezdojatekos.mgbeans;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.TreeMap;
 import javax.faces.bean.ApplicationScoped;
 import javax.inject.Named;
 import javax.faces.bean.ManagedBean;
-import model.Category;
-import model.Question;
-import model.QuestionDao;
-import model.QuestionDaoMysql;
+import hu.joti.kezdojatekos.model.Category;
+import hu.joti.kezdojatekos.model.Question;
+import hu.joti.kezdojatekos.model.QuestionDao;
+import hu.joti.kezdojatekos.model.QuestionDaoMysql;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

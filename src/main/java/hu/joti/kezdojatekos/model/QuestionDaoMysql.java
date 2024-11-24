@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package model;
+package hu.joti.kezdojatekos.model;
 
 import java.io.Serializable;
 import java.sql.Connection;

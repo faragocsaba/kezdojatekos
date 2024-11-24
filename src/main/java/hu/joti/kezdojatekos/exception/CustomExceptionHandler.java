@@ -1,4 +1,10 @@
-package hu.joti.betuparbaj.exception;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package hu.joti.kezdojatekos.exception;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -7,10 +13,9 @@ import javax.faces.application.NavigationHandler;
 import javax.faces.application.ViewExpiredException;
 import javax.faces.context.ExceptionHandler;
 import javax.faces.context.ExceptionHandlerWrapper;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ExceptionQueuedEvent;
-import javax.faces.event.ExceptionQueuedEventContext;
+import javax.faces.event.ExceptionQueuedEventContext; 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -77,5 +82,6 @@ public class CustomExceptionHandler extends ExceptionHandlerWrapper {
     }
     //parent handle
     getWrapped().handle();
-  }
+  } 
+  
 }
