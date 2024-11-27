@@ -104,11 +104,17 @@ public class GameManager implements Serializable {
       
       LOGGER.debug("Ismétlődési határ: " + ((int)(QUESTION_REPEAT_RATE * allSize)));
       if (recentQuestions.size() > (int)(QUESTION_REPEAT_RATE * allSize)){
-        if (recentQuestions.get(0).isUnequivocal() || !noEquivocal){
-          LOGGER.debug("Kérdés ismét jöhet: " + recentQuestions.get(0).getText());
-          recentQuestions.remove(0);
-          questionIndex--;
-        }  
+        int qIndex = 0;
+        do {
+          if (recentQuestions.get(qIndex).isUnequivocal() || !noEquivocal){
+            LOGGER.debug("Kérdés ismét jöhet: " + recentQuestions.get(qIndex).getText());
+            recentQuestions.remove(qIndex);
+            questionIndex--;
+            qIndex = -1;
+          } else {
+            qIndex++;
+          }
+        } while (qIndex >= 0 && qIndex < recentQuestions.size());
       }
     }  
   };
