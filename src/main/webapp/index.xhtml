@@ -2,7 +2,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough" 
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
   <h:head>
     <title>Kezdőjátékos</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
@@ -10,6 +12,7 @@
     <meta name="keywords" content="kezdojatekos,kezdőjátékos"/>
     <meta name="author" content="Tihon József"/>      
     <link rel="icon" type="image/png" href="favicon.png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
     
     <style>               
       .bgimage{
@@ -29,9 +32,22 @@
               <h1>Kezdőjátékos</h1>
             </div>        -->
       <h:panelGroup id="pg_full">
+        <p:sidebar widgetVar="sidebar3" position="top" blockScroll="true" style="height:135px; background-color: #d8dcdd; opacity: 1;">
+          <div align="center" style="width:400px;">
+            <p:toggleSwitch id="ts_noequivocal" style="position: absolute; top: 25px; left:30px;" value="#{gameManager.noEquivocal}"/>
+            <div style="position: absolute; top: 12px; left:100px;height:55px;  width: 70%;">
+              <h:outputLabel id="equivocallabel" class="settingstext vcenter" >CSAK ELLENŐRIZHETŐ KÉRDÉSEK</h:outputLabel>
+            </div>
+            <p:toggleSwitch id="ts_addindiscreet" style="position: absolute; top: 78px; left:30px;" value="#{gameManager.addIndiscreet}"/>
+            <div style="position: absolute; top: 65px; left:100px;height:55px;  width: 70%;">
+              <h:outputLabel id="indiscreetlabel" class="settingstext vcenter">KELLEMETLEN KÉRDÉSEK IS</h:outputLabel>
+            </div>
+          </div>
+        </p:sidebar>
         <h:panelGroup id="pg_welcome" rendered="#{gameManager.getQuestionNumber() == 0}">
           <p align="center"  class="fullpg">
-            <table id="tblStart" align="center" class="starttext" style="width:90%; height: 100%; max-width: 940px; line-height: 1.5; margin: auto;">
+
+            <table id="tblStart" align="center" class="starttext" style="width:96%; height: 100%; max-width: 940px; line-height: 1.5; margin: auto;">
               <tr>
                 <td>  
                   <div style="height: 50px;">
@@ -48,12 +64,18 @@
                   </div>
                 </td>
               </tr>  
-              <tr style="line-height: 60px">
+              <tr style="line-height: 45px">
                 <td align="center">
-                  <h:commandButton id="btn_start" class="button" value="JÖHET A KÉRDÉS!"
-                                   action="#{gameManager.nextQuestion()}">
-                    <f:ajax render="pg_full"/>
-                  </h:commandButton>                            
+                  <div style="max-width: 500px;margin: auto;">
+                  <p:commandButton id="btn_start" class="button" style="width:256px;margin-right: -1px;padding:0px;" value="JÖHET A KÉRDÉS!"
+                                   action="#{gameManager.nextQuestion()}"
+                                   onclick="PF('sidebar3').show()">
+                    <f:ajax execute="ts_noequivocal ts_addindiscreet" render="pg_full"/>
+                  </p:commandButton>         
+                  <p:commandButton id="btn_sidebar" class="button fa fa-gear" style="width:50px;padding:9px;" value=""
+                                   onclick="PF('sidebar3').show()">
+                  </p:commandButton>         
+                  </div>
                 </td>
               </tr>  
             </table>    
@@ -62,7 +84,7 @@
 
         <h:panelGroup id="pg_game" rendered="#{gameManager.getQuestionNumber() > 0}">
           <p align="center">
-            <table id="tblStart" align="center" class="starttext" style="width:90%; height: 100%; max-width: 1040px; line-height: 1.5; margin: auto;">
+            <table id="tblStart" align="center" class="starttext" style="width:96%; height: 100%; max-width: 1040px; line-height: 1.5; margin: auto;">
               <tr>
                 <td>  
                   <div style="height: 50px;">
@@ -85,15 +107,18 @@
               <tr style="line-height: 45px">
                 <td align="center">
                   <div style="max-width: 400px;margin: auto;">
-                  <h:commandButton id="btn_prev" class="button" style="width: 50px; float: left;" value="&#8617;" disabled="#{gameManager.getQuestionIndex() eq 1}"
+                  <h:commandButton id="btn_prev" class="button" style="width: 45px; float: left;" value="&#8617;" disabled="#{gameManager.getQuestionIndex() eq 1}"
                                    action="#{gameManager.prevQuestion()}">
                     <f:ajax render="pg_game"/>
                   </h:commandButton>                      
-                  <h:commandButton id="btn_new" class="button" style="width: 160px;" value="ÚJ KÉRDÉS"
+                  <h:commandButton id="btn_new" class="button" style="width: 160px;margin-right: -1px;" value="ÚJ KÉRDÉS"
                                    action="#{gameManager.newQuestion()}">
-                    <f:ajax render="pg_game"/>
+                    <f:ajax execute="ts_noequivocal ts_addindiscreet" render="pg_full"/>
                   </h:commandButton>                      
-                  <h:commandButton id="btn_next" class="button" style="width: 50px; float: right;" value="&#8618;" disabled="#{gameManager.getQuestionIndex() eq gameManager.getQuestionNumber()}"
+                  <p:commandButton id="btn_sidebar2" class="button fa fa-gear" style="width:50px;padding: 9px;" value=""
+                                   onclick="PF('sidebar3').show()">
+                  </p:commandButton>         
+                  <h:commandButton id="btn_next" class="button" style="width: 45px; float: right;" value="&#8618;" disabled="#{gameManager.getQuestionIndex() eq gameManager.getQuestionNumber()}"
                                    action="#{gameManager.nextQuestion()}">
                     <f:ajax render="pg_game"/>
                   </h:commandButton>             

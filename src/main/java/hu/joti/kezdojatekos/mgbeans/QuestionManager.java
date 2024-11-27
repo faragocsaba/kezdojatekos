@@ -91,12 +91,12 @@ public class QuestionManager implements Serializable {
 
   }
 
-  public List<Question> getActiveQuestions() {
+  public List<Question> getActiveQuestions(boolean noEquivocal, boolean addIndiscreet) {
     List<Question> questions = new ArrayList<>(allQuestions);
     List<Question> inactQuestions = new ArrayList<>();
 
     for (Question question : questions) {
-      if (!question.isActive())
+      if (!question.isActive() || (noEquivocal && !question.isUnequivocal()) || (!addIndiscreet && question.isIndiscreet()))
         inactQuestions.add(question);
     }
     

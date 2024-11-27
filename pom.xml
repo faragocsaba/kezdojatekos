@@ -14,7 +14,9 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>1.8</java.version>
     <javaee.version>8.0.1</javaee.version>
+    <cdi.version>1.2</cdi.version>
     <mojarra.version>2.4.0</mojarra.version>
+    <primefaces.version>8.0</primefaces.version>
     <mysql.version>8.0.33</mysql.version>
     <log4j.version>2.20.0</log4j.version>
   </properties>
@@ -25,6 +27,16 @@
       <artifactId>javaee-web-api</artifactId>
       <version>${javaee.version}</version>
       <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.enterprise</groupId>
+      <artifactId>cdi-api</artifactId>
+      <version>${cdi.version}</version>
+    </dependency>    
+    <dependency>
+      <groupId>org.primefaces</groupId>
+      <artifactId>primefaces</artifactId>
+      <version>${primefaces.version}</version>
     </dependency>
     <dependency>
       <groupId>org.glassfish</groupId>
