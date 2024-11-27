@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css?family=Itim&display=swap');
 
+body {
+  margin: 0; 
+  height: 100%; 
+  overflow-y: hidden;
+}
+
 .header {
   background-color: #ffffff;
   color: #000000;
