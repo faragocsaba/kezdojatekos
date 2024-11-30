@@ -37,10 +37,11 @@ public class QuestionManager implements Serializable {
   public QuestionManager() {
     LOGGER.trace("QuestionManager starting");
     allQuestions = new ArrayList<>();
+    loadQuestions();
+  }
 
-    QuestionDao questionDao;
-            
-    questionDao = new QuestionDaoMysql();
+  public void loadQuestions(){
+    QuestionDao questionDao = new QuestionDaoMysql();
 
     categories = questionDao.findAllCategories();
     LOGGER.debug("Kategóriák száma:" + categories.size());
@@ -88,9 +89,16 @@ public class QuestionManager implements Serializable {
     LOGGER.debug("Új kérdések száma:" + newQuestions.size());
     allQuestions.addAll(newQuestions);
     LOGGER.debug("Kérdések száma:" + allQuestions.size());
-
   }
 
+  public void saveQuestionsToFile(){
+    LOGGER.debug("Kérdések mentése fájlba...");
+  }
+          
+  public void readQuestionsFromFile(){
+    LOGGER.debug("Fájl feltöltése...");
+  }
+  
   public List<Question> getActiveQuestions(boolean noEquivocal, boolean addIndiscreet) {
     List<Question> questions = new ArrayList<>(allQuestions);
     List<Question> inactQuestions = new ArrayList<>();

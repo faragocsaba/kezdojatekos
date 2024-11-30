@@ -44,7 +44,12 @@
             </div>
           </div>
         </p:sidebar>
-        <h:panelGroup id="pg_welcome" rendered="#{gameManager.getQuestionNumber() == 0}">
+        <h:commandButton id="btn_toadminpage" class="button" style="position:absolute;top:0px;left:0px;width:100px" value="ADMIN" 
+                         rendered="#{viewManager.admin == true and gameManager.adminPage == false}"
+                         action="#{gameManager.setAdminPage(true)}">
+          <f:ajax render="pg_full"/>
+        </h:commandButton>
+        <h:panelGroup id="pg_welcome" rendered="#{gameManager.getQuestionNumber() == 0 and gameManager.adminPage == false}">
           <p align="center"  class="fullpg">
 
             <table id="tblStart" align="center" class="starttext" style="width:96%; height: 100%; max-width: 940px; line-height: 1.5; margin: auto;">
@@ -76,6 +81,7 @@
                   <p:commandButton id="btn_sidebar" class="button fa fa-gear" style="width:50px;padding:9px;" value=""
                                    onclick="PF('sidebar3').show()">
                   </p:commandButton>         
+
                   </div>
                 </td>
               </tr>  
@@ -83,7 +89,7 @@
           </p>    
         </h:panelGroup>
 
-        <h:panelGroup id="pg_game" rendered="#{gameManager.getQuestionNumber() > 0}">
+        <h:panelGroup id="pg_game" rendered="#{gameManager.getQuestionNumber() > 0 and gameManager.adminPage == false}">
           <p align="center">
             <table id="tblStart" align="center" class="starttext" style="width:96%; height: 100%; max-width: 1040px; line-height: 1.5; margin: auto;">
               <tr>
@@ -108,7 +114,7 @@
               <tr style="line-height: 45px">
                 <td align="center">
                   <div style="max-width: 350px;margin: auto;">
-                  <h:commandButton id="btn_prev" class="button" style="width: 45px; float: left;" value="&#8617;" disabled="#{gameManager.getQuestionIndex() eq 1}"
+                  <h:commandButton id="btn_prev" class="button" style="width: 45px; float: left; font-size: 32px; line-height:1.0;" value="&#8630;" disabled="#{gameManager.getQuestionIndex() eq 1}"
                                    action="#{gameManager.prevQuestion()}">
                     <f:ajax render="pg_game"/>
                   </h:commandButton>                      
@@ -119,7 +125,7 @@
                   <p:commandButton id="btn_sidebar2" class="button fa fa-gear" style="width:50px;padding: 9px;" value=""
                                    onclick="PF('sidebar3').show()">
                   </p:commandButton>         
-                  <h:commandButton id="btn_next" class="button" style="width: 45px; float: right;" value="&#8618;" disabled="#{gameManager.getQuestionIndex() eq gameManager.getQuestionNumber()}"
+                  <h:commandButton id="btn_next" class="button" style="width: 45px; float: right; font-size: 32px; line-height:1.0;" value="&#8631;" disabled="#{gameManager.getQuestionIndex() eq gameManager.getQuestionNumber()}"
                                    action="#{gameManager.nextQuestion()}">
                     <f:ajax render="pg_game"/>
                   </h:commandButton>             
@@ -129,7 +135,34 @@
             </table>    
           </p>    
         </h:panelGroup>
-      </h:panelGroup>              
+        <h:panelGroup id="pg_adminpage" rendered="#{gameManager.adminPage == true}">
+          <h:commandButton id="btn_quitadmin" class="button" value="VISSZA" action="#{gameManager.setAdminPage(false)}">
+            <f:ajax render="pg_full"/>
+          </h:commandButton>
+          <br/>
+          <h:commandButton id="btn_reload" class="button" value="KÉRDÉSEK BETÖLTÉSE" action="#{questionManager.loadQuestions()}">
+            <f:ajax render="pg_full"/>
+          </h:commandButton>                      
+          <br/>
+          <!-- Fájl alapján adatbázis újratöltése -->
+          <p:commandButton id="btn_loadcsv" class="button" value="FÁJL FELTÖLTÉSE" action="#{questionManager.readQuestionsFromFile()}">
+            <p:confirm header="Megerősítés" message="Biztosan felülírod az adatbázis tartalmát?"/>
+          </p:commandButton>
+          <br/>
+          <!-- Adatbázis alapján fájl mentése -->
+          <p:commandButton id="btn_savecsv" class="button" value="MENTÉS FÁJLBA" action="#{questionManager.saveQuestionsToFile()}">
+            <f:ajax render="pg_full"/>
+          </p:commandButton>
+          <br/>
+            
+        </h:panelGroup>
+      </h:panelGroup>  
+      
+      <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" closeOnEscape="true" appendTo="@(body)" styleClass="confirmdialog">
+        <p:commandButton value="Igen" type="button" styleClass="ui-confirmdialog-yes"/>
+        <p:commandButton value="Nem" type="button" styleClass="ui-confirmdialog-no"/>
+      </p:confirmDialog>       
+      
     </h:form>
   </h:body>
 </html>

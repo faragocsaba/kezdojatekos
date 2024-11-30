@@ -14,6 +14,7 @@ import java.util.Random;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import hu.joti.kezdojatekos.model.Question;
+import javax.servlet.http.Part;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -31,9 +32,12 @@ public class GameManager implements Serializable {
 
   private List<Question> recentQuestions;
   private Question lastQuestion;
+  private Part file;
+
   private int questionIndex;
   private boolean addIndiscreet = false;
   private boolean noEquivocal = false;
+  private boolean adminPage = false;
 
   // Az összes kérdés hány százalékának kell elfogynia ahhoz, hogy egy kérdés ismét előfordulhasson
   private static final double QUESTION_REPEAT_RATE = 0.3;
@@ -58,6 +62,7 @@ public class GameManager implements Serializable {
   }
 
   public void nextQuestion(){
+    
     if (questionIndex < recentQuestions.size()){
       questionIndex++;
       lastQuestion = recentQuestions.get(questionIndex - 1);
@@ -183,6 +188,22 @@ public class GameManager implements Serializable {
 
   public void setNoEquivocal(boolean noEquivocal) {
     this.noEquivocal = noEquivocal;
+  }
+
+  public boolean isAdminPage() {
+    return adminPage;
+  }
+
+  public void setAdminPage(boolean adminPage) {
+    this.adminPage = adminPage;
+  }
+
+  public Part getFile() {
+    return file;
+  }
+
+  public void setFile(Part file) {
+    this.file = file;
   }
   
 }
