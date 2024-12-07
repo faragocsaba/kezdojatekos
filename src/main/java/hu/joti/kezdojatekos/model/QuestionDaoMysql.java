@@ -168,8 +168,51 @@ public class QuestionDaoMysql implements QuestionDao, Serializable {
   }
 
   @Override
-  public void saveAllQuestions(List<Question> questions) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  public void saveAllQuestions(List<Question> questions, boolean append) {
+    Connection conn = null;
+    PreparedStatement pstmt = null;
+    int wordNum = 0;
+
+    LOGGER.info("questions.size: " + questions.size());
+
+    try {
+      conn = getConnection();
+
+      if (!append){
+        pstmt = conn.prepareStatement("truncate question");
+        pstmt.execute();
+      }  
+
+      pstmt = conn.prepareStatement("insert into question (text, explanation, is_active, is_unequivocal, is_indiscreet, category_id) values (?, ?, ?, ?, ?, ?);");
+
+      for (Question q : questions) {
+        pstmt.setString(1, q.getText());
+        pstmt.setString(3, q.getExplanation());
+        pstmt.setInt(3, q.isActive()? 1 : 0 );
+        pstmt.setInt(4, q.isUnequivocal() ? 1 : 0 );
+        pstmt.setInt(5, q.isIndiscreet() ? 1 : 0 );
+        pstmt.setInt(6, q.getCategory().getId());
+        pstmt.executeUpdate();
+      }
+
+    } catch (SQLException ex) {
+      LOGGER.error(ex);
+    } finally {
+      if (pstmt != null) {
+        try {
+          pstmt.close();
+        } catch (SQLException ex) {
+          LOGGER.error(ex);
+        }
+      }
+      if (conn != null) {
+        try {
+          conn.close();
+        } catch (SQLException ex) {
+          LOGGER.error(ex);
+        }
+      }
+    }
   }
 
 }

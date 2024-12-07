@@ -5,8 +5,11 @@
       xmlns:a="http://xmlns.jcp.org/jsf/passthrough" 
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
+
+<f:view locale="#{chatRoom.locale}" encoding="UTF-8" contentType="text/html">
   <h:head>
     <title>Kezdőjátékos</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
     <meta name="description" content="Társasjátékok kezdőjátékosának meghatározását segítő weboldal"/>
     <meta name="keywords" content="kezdojatekos,kezdőjátékos"/>
@@ -25,9 +28,10 @@
     </style>   
   </h:head>
   <h:body styleClass="bgimage">
+    <h:outputScript library="js" name="misc.js" />
     <h:outputStylesheet library="css" name="style.css" />
 
-    <h:form id="pageform"  acceptcharset="UTF-8" enctype="multipart/form-data">
+    <h:form id="pageform" acceptcharset="UTF-8" enctype="multipart/form-data">
       <!--      <div class="header">
               <h1>Kezdőjátékos</h1>
             </div>        -->
@@ -139,20 +143,61 @@
           <h:commandButton id="btn_quitadmin" class="button" value="VISSZA" action="#{gameManager.setAdminPage(false)}">
             <f:ajax render="pg_full"/>
           </h:commandButton>
-          <br/>
-          <h:commandButton id="btn_reload" class="button" value="KÉRDÉSEK BETÖLTÉSE" action="#{questionManager.loadQuestions()}">
+          <br/><br/><br/>
+          <h:outputLabel id="lbl_questioncount" class="settingstext">KÉRDÉSEK SZÁMA: #{questionManager.questionCount}</h:outputLabel>
+          <br/><br/><br/>
+
+          <h:commandButton id="btn_reload" class="button" value="KÉRDÉSEK FRISSÍTÉSE" action="#{questionManager.loadQuestions()}">
             <f:ajax render="pg_full"/>
           </h:commandButton>                      
-          <br/>
+          <br/><br/>
+
           <!-- Fájl alapján adatbázis újratöltése -->
-          <p:commandButton id="btn_loadcsv" class="button" value="FÁJL FELTÖLTÉSE" action="#{questionManager.readQuestionsFromFile()}">
-            <p:confirm header="Megerősítés" message="Biztosan felülírod az adatbázis tartalmát?"/>
-          </p:commandButton>
+
+          <h:commandButton id="btn_setcanload" class="button" value="KÉRDÉSEK FELTÖLTÉSE" action="#{gameManager.setCanLoadFile(true)}">
+            <f:ajax render="pg_adminpage"/>
+          </h:commandButton>                      
+          <br/><br/>
+          <h:panelGroup id="pg_loadfile" rendered="#{gameManager.canLoadFile == true}">
+            <input id="in_filename" class="starttext" style="width: 433px" placeholder="" disabled="true" value=""/>
+            <h:outputLabel for="if_loadfile" class="button" style="margin-left: 8px;" value="FÁJL KIVÁLASZTÁSA..."></h:outputLabel>
+            <h:inputFile  id="if_loadfile" value="#{gameManager.file}" style="width: 0px; height: 0px;">
+               <f:validator validatorId="fileValidator"/>
+            </h:inputFile>  
+            <script>getfilename();</script>
+
+          <br/><br/>
+          <div>
+          <h:selectBooleanCheckbox id="chk_fullLoad" value="#{gameManager.fullLoad}"/>         
+          <h:outputLabel id="lbl_fullload" class="settingstext">MEGLÉVŐ KÉRDÉSEK TÖRLÉSE</h:outputLabel>
+          <br/><br/>
+          <f:ajax disabled="true">
+          <h:commandButton id="btn_loadcsv" class="button" type="submit" style="width: auto;" value="FÁJL FELDOLGOZÁSA" action="#{gameManager.updateQuestionsFromFile()}"></h:commandButton>
+          </f:ajax>
+          <h:commandButton id="btn_setcantload" class="button" type="submit" style="width: auto;" value="MÉGSE" action="#{gameManager.setCanLoadFile(false)}">
+            <f:ajax render="pg_adminpage"/>
+          </h:commandButton>
+          </div>
           <br/>
+          <div style="text-align: center;">
+            <p:message id="ms_loadgame" for="if_loadfile">
+              <p:effect type="fade" event="load" delay="4000">  
+                <f:param name="mode" value="'hide'"/>
+              </p:effect>                          
+            </p:message>
+          </div>  
+          </h:panelGroup>
+          
+
           <!-- Adatbázis alapján fájl mentése -->
-          <p:commandButton id="btn_savecsv" class="button" value="MENTÉS FÁJLBA" action="#{questionManager.saveQuestionsToFile()}">
-            <f:ajax render="pg_full"/>
-          </p:commandButton>
+          <f:ajax disabled="true">
+            <h:commandButton id="btn_savecsv" class="button" value="KÉRDÉSEK LETÖLTÉSE" disabled="#{gameManager.canLoadFile == true}" action="#{questionManager.saveQuestionsToFile()}"></h:commandButton>
+          </f:ajax>
+          <br/><br/>
+          <!-- Adatbázis alapján fájl mentése -->
+          <f:ajax disabled="true">
+            <h:commandButton id="btn_savecatcsv" class="button" value="KATEGÓRIÁK LETÖLTÉSE" style="width: auto;" disabled="#{gameManager.canLoadFile == true}" action="#{questionManager.saveCategoriesToFile()}"></h:commandButton>
+          </f:ajax>
           <br/>
             
         </h:panelGroup>
@@ -165,5 +210,6 @@
       
     </h:form>
   </h:body>
+</f:view> 
 </html>
 

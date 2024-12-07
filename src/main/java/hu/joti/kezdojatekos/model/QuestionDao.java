@@ -11,6 +11,6 @@ public interface QuestionDao {
 
   List<Category> findAllCategories();
   List<Question> findAllQuestions(Map<Integer, Category> categories);
-  void saveAllQuestions(List<Question> questions);
+  void saveAllQuestions(List<Question> questions, boolean append);
   
 }

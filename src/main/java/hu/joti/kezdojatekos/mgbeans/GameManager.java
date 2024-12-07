@@ -5,6 +5,7 @@
  */
 package hu.joti.kezdojatekos.mgbeans;
 
+import hu.joti.kezdojatekos.model.Category;
 import javax.inject.Named;
 import javax.faces.bean.SessionScoped;
 import java.io.Serializable;
@@ -14,9 +15,22 @@ import java.util.Random;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import hu.joti.kezdojatekos.model.Question;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.nio.file.Paths;
+import java.util.Map;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.primefaces.model.file.UploadedFile;
 
 /**
  *
@@ -33,11 +47,14 @@ public class GameManager implements Serializable {
   private List<Question> recentQuestions;
   private Question lastQuestion;
   private Part file;
+  private UploadedFile inputfile;
 
   private int questionIndex;
   private boolean addIndiscreet = false;
   private boolean noEquivocal = false;
   private boolean adminPage = false;
+  private boolean canLoadFile = false;
+  private boolean fullLoad = false;
 
   // Az összes kérdés hány százalékának kell elfogynia ahhoz, hogy egy kérdés ismét előfordulhasson
   private static final double QUESTION_REPEAT_RATE = 0.3;
@@ -124,6 +141,14 @@ public class GameManager implements Serializable {
     }  
   };
   
+  public void updateQuestionsFromFile(){
+    LOGGER.debug("Fájl feltöltése előtt.....");
+    List <Question> questions = questionManager.readQuestionsFromFile(file, false);
+    LOGGER.debug("Beolvasott kérdések száma:" + questions.size());
+    canLoadFile = false;
+    questionManager.saveQuestions(questions, !fullLoad);
+  }
+  
   public QuestionManager getQuestionManager() {
     return questionManager;
   }
@@ -204,6 +229,30 @@ public class GameManager implements Serializable {
 
   public void setFile(Part file) {
     this.file = file;
+  }
+
+  public UploadedFile getInputfile() {
+    return inputfile;
+  }
+
+  public void setInputfile(UploadedFile inputfile) {
+    this.inputfile = inputfile;
+  }
+
+  public boolean isCanLoadFile() {
+    return canLoadFile;
+  }
+
+  public void setCanLoadFile(boolean canLoadFile) {
+    this.canLoadFile = canLoadFile;
+  }
+
+  public boolean isFullLoad() {
+    return fullLoad;
+  }
+
+  public void setFullLoad(boolean fullLoad) {
+    this.fullLoad = fullLoad;
   }
   
 }
