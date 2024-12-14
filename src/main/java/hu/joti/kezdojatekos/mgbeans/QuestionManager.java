@@ -86,7 +86,7 @@ public class QuestionManager implements Serializable {
             newText = question.getText().substring(0, brStart) + item + question.getText().substring(brEnd + 1);
             LOGGER.debug("newText: " + newText);
             maxId++;
-            Question newQuestion = new Question(maxId, newText, question.getExplanation(), question.isActive(), question.isUnequivocal(), question.isIndiscreet(), question.getCategory());
+            Question newQuestion = new Question(maxId, newText, question.getExplanation(), question.getWeight(), question.isActive(), question.isUnequivocal(), question.isIndiscreet(), question.getCategory());
             newQuestions.add(question);
           }
           question.setActive(false);
@@ -181,7 +181,8 @@ public class QuestionManager implements Serializable {
     LOGGER.debug("Kérdések mentése...");
     QuestionDao questionDao = new QuestionDaoMysql();
 
-    questionDao.saveAllQuestions(questions, append);
+    LOGGER.debug("...most még nem mentünk.");   
+//    questionDao.saveAllQuestions(questions, append);
   }
           
   public List<Question> getActiveQuestions(boolean noEquivocal, boolean addIndiscreet) {

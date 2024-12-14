@@ -5,7 +5,6 @@
  */
 package hu.joti.kezdojatekos.mgbeans;
 
-import hu.joti.kezdojatekos.model.Category;
 import javax.inject.Named;
 import javax.faces.bean.SessionScoped;
 import java.io.Serializable;
@@ -15,18 +14,8 @@ import java.util.Random;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import hu.joti.kezdojatekos.model.Question;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.nio.file.Paths;
 import java.util.Map;
-import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletResponse;
+import java.util.TreeMap;
 import javax.servlet.http.Part;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -97,9 +86,21 @@ public class GameManager implements Serializable {
       availQuestions.removeAll(recentQuestions);
       LOGGER.debug("Összes: " + allSize + ", megkérdezve: " + recentQuestions.size() + ", elérhető: " + availQuestions.size());
 
+      Map<Integer, Integer> wQMap = new TreeMap<>();
+      for (int qIndex = 0; qIndex < availQuestions.size(); qIndex++) {
+        int mapSize = wQMap.size();
+        Question q = availQuestions.get(qIndex);
+        for (int i = 0; i < q.getWeight(); i++) {
+          wQMap.put(mapSize + i, qIndex);
+        }
+      }
+      LOGGER.debug("wQMap size: " + wQMap.size());
+      
       Random rnd = new Random();
-      int rndIndex = rnd.nextInt(availQuestions.size());
-      Question rndQuestion = availQuestions.get(rndIndex);
+      int rndIndex = rnd.nextInt(wQMap.size());
+//      LOGGER.debug("rndIndex: " + rndIndex);
+//      LOGGER.debug("wQMap index: " + wQMap.get(rndIndex));
+      Question rndQuestion = availQuestions.get(wQMap.get(rndIndex));
       try {
         lastQuestion = (Question) rndQuestion.clone();
       } catch (CloneNotSupportedException ex) {

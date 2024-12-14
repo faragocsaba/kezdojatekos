@@ -122,6 +122,7 @@ public class QuestionDaoMysql implements QuestionDao, Serializable {
           int question_id = rs.getInt("question_id");
           String text = rs.getString("text");
           String explanation = rs.getString("explanation");
+          int weight = rs.getInt("weight");
           boolean active = rs.getBoolean("is_active");
           boolean unequivocal = rs.getBoolean("is_unequivocal");
           boolean indiscreet = rs.getBoolean("is_indiscreet");
@@ -129,7 +130,7 @@ public class QuestionDaoMysql implements QuestionDao, Serializable {
           
           Category category = categories.get(category_id);
 
-          Question question = new Question(question_id, text, explanation, active, unequivocal, indiscreet, category);
+          Question question = new Question(question_id, text, explanation, weight, active, unequivocal, indiscreet, category);
           questions.add(question);
         }  
       }
@@ -183,15 +184,16 @@ public class QuestionDaoMysql implements QuestionDao, Serializable {
         pstmt.execute();
       }  
 
-      pstmt = conn.prepareStatement("insert into question (text, explanation, is_active, is_unequivocal, is_indiscreet, category_id) values (?, ?, ?, ?, ?, ?);");
+      pstmt = conn.prepareStatement("insert into question (text, explanation, weight, is_active, is_unequivocal, is_indiscreet, category_id) values (?, ?, ?, ?, ?, ?);");
 
       for (Question q : questions) {
         pstmt.setString(1, q.getText());
-        pstmt.setString(3, q.getExplanation());
-        pstmt.setInt(3, q.isActive()? 1 : 0 );
-        pstmt.setInt(4, q.isUnequivocal() ? 1 : 0 );
-        pstmt.setInt(5, q.isIndiscreet() ? 1 : 0 );
-        pstmt.setInt(6, q.getCategory().getId());
+        pstmt.setString(2, q.getExplanation());
+        pstmt.setInt(3, q.getWeight() );
+        pstmt.setInt(4, q.isActive()? 1 : 0 );
+        pstmt.setInt(5, q.isUnequivocal() ? 1 : 0 );
+        pstmt.setInt(6, q.isIndiscreet() ? 1 : 0 );
+        pstmt.setInt(7, q.getCategory().getId());
         pstmt.executeUpdate();
       }
 

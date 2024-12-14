@@ -16,15 +16,17 @@ public class Question implements Serializable, Cloneable {
   private int id;
   private String text;
   private String explanation;
+  private int weight;
   private boolean active;
   private boolean unequivocal;
   private boolean indiscreet;
   private Category category;
 
-  public Question(int id, String text, String explanation, boolean active, boolean unequivocal, boolean indiscreet, Category category) {
+  public Question(int id, String text, String explanation, int weight, boolean active, boolean unequivocal, boolean indiscreet, Category category) {
     this.id = id;
     this.text = text;
     this.explanation = explanation;
+    this.weight = weight;            
     this.active = active;
     this.unequivocal = unequivocal;
     this.indiscreet = indiscreet;
@@ -93,6 +95,14 @@ public class Question implements Serializable, Cloneable {
 
   public void setCategory(Category category) {
     this.category = category;
+  }
+
+  public int getWeight() {
+    return weight;
+  }
+
+  public void setWeight(int weight) {
+    this.weight = weight;
   }
   
 }
