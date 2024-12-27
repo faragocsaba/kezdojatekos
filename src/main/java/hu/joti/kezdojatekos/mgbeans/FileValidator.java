@@ -5,10 +5,8 @@
  */
 package hu.joti.kezdojatekos.mgbeans;
 
-import javax.enterprise.context.RequestScoped;
+import java.io.Serializable;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.FacesValidator;
@@ -22,18 +20,14 @@ import org.apache.logging.log4j.Logger;
  *
  * @author Joti
  */
-@ManagedBean
-@RequestScoped
 @FacesValidator("fileValidator")
-public class FileValidator implements Validator{
-
-  @ManagedProperty("#{questionManager}")
-  QuestionManager questionManager;
-
-  @ManagedProperty("#{gameManager}")
-  GameManager gameManager;
+public class FileValidator implements Validator, Serializable{
 
   private static final Logger LOGGER = LogManager.getLogger(FileValidator.class.getName());
+
+  public FileValidator() {
+    LOGGER.trace("FileValidator starting");
+  }
 
   @Override
   public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
@@ -53,10 +47,15 @@ public class FileValidator implements Validator{
       throw new ValidatorException(msg);
     }
     
-    LOGGER.info("B");
+    QuestionManager questionManager = context.getApplication().evaluateExpressionGet(context, "#{questionManager}", QuestionManager.class);
+    GameManager gameManager = context.getApplication().evaluateExpressionGet(context, "#{gameManager}", GameManager.class);
+    
+    LOGGER.info(gameManager == null);
+    LOGGER.info(questionManager == null);
 
     try {
       boolean fullLoad = gameManager.isFullLoad();
+      LOGGER.info("fullLoad = " + fullLoad);
       questionManager.readQuestionsFromFile(file, !fullLoad);
     } catch (IllegalArgumentException ex) {
       LOGGER.info("A fájl tartalma nem megfelelő: " + ex.getMessage());
@@ -65,14 +64,6 @@ public class FileValidator implements Validator{
       throw new ValidatorException(msg);
     }    
     
-  }
-
-  public QuestionManager getQuestionManager() {
-    return questionManager;
-  }
-
-  public void setQuestionManager(QuestionManager questionManager) {
-    this.questionManager = questionManager;
   }
   
 }

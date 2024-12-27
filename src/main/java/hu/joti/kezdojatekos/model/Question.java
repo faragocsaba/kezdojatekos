@@ -21,6 +21,9 @@ public class Question implements Serializable, Cloneable {
   private boolean unequivocal;
   private boolean indiscreet;
   private Category category;
+  
+  private boolean composite;
+  private boolean derived;
 
   public Question(int id, String text, String explanation, int weight, boolean active, boolean unequivocal, boolean indiscreet, Category category) {
     this.id = id;
@@ -103,6 +106,22 @@ public class Question implements Serializable, Cloneable {
 
   public void setWeight(int weight) {
     this.weight = weight;
+  }
+
+  public boolean isComposite() {
+    return composite;
+  }
+
+  public void setComposite(boolean composite) {
+    this.composite = composite;
+  }
+
+  public boolean isDerived() {
+    return derived;
+  }
+
+  public void setDerived(boolean derived) {
+    this.derived = derived;
   }
   
 }

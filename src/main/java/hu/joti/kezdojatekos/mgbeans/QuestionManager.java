@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.Locale;
 import javax.faces.bean.ApplicationScoped;
 import javax.inject.Named;
 import javax.faces.bean.ManagedBean;
@@ -23,10 +24,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
-import java.util.IllegalFormatException;
 import javax.faces.context.FacesContext;
-import javax.faces.validator.ValidatorException;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import org.apache.logging.log4j.LogManager;
@@ -45,7 +45,7 @@ public class QuestionManager implements Serializable {
   private List<Category> categories;
 
   private static final Logger LOGGER = LogManager.getLogger(QuestionManager.class.getName());
-  private static final String CSV_DELIMITER = "|";
+  private static final String CSV_DELIMITER = ";";
   
   public QuestionManager() {
     LOGGER.trace("QuestionManager starting");
@@ -76,20 +76,22 @@ public class QuestionManager implements Serializable {
 
     for (Question question : allQuestions) {
       brStart = question.getText().indexOf("{");
-      if (brStart >= 0){
+      if (question.isActive() && brStart >= 0){
         LOGGER.debug("Van zárójel: " + question.getText());
         brEnd = question.getText().indexOf("}");
         if (brEnd > brStart + 1){
-          items = question.getText().substring(brStart + 1, brEnd).split(";");
+          items = question.getText().substring(brStart + 1, brEnd).split("\\|");
           for (String item : items) {
             LOGGER.debug("item: " + item);
             newText = question.getText().substring(0, brStart) + item + question.getText().substring(brEnd + 1);
             LOGGER.debug("newText: " + newText);
             maxId++;
             Question newQuestion = new Question(maxId, newText, question.getExplanation(), question.getWeight(), question.isActive(), question.isUnequivocal(), question.isIndiscreet(), question.getCategory());
-            newQuestions.add(question);
+            newQuestion.setDerived(true);
+            newQuestions.add(newQuestion);
           }
           question.setActive(false);
+          question.setComposite(true);
         }
       }
     }
@@ -120,7 +122,7 @@ public class QuestionManager implements Serializable {
     try {
       input = file.getInputStream();
 
-      try (BufferedReader reader = new BufferedReader(new InputStreamReader(input))) {
+      try (BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8))) {
           String line;
           Question q;
           while ((line = reader.readLine()) != null) {
@@ -128,7 +130,7 @@ public class QuestionManager implements Serializable {
               
               String[] values = line.split(CSV_DELIMITER);
               
-              if (header && (values[2].trim().equals("1") || values[2].trim().equals("0"))){
+              if (header && !(values[2].trim().equals("1") || values[2].trim().equals("0"))){
                 continue;
               }
               header = false;
@@ -145,7 +147,7 @@ public class QuestionManager implements Serializable {
               q.setActive(values[2].trim().equals("1"));
               q.setUnequivocal(values[3].trim().equals("1"));
               q.setIndiscreet(values[4].trim().equals("1"));
-              
+
               try {
                 int categoryId = Integer.parseInt(values[5].trim());
                 if ( categoryMap.get(categoryId) != null )
@@ -155,6 +157,13 @@ public class QuestionManager implements Serializable {
               }
               catch (NumberFormatException e) {
                 throw new IllegalArgumentException("A megadott kategória azonosító nem szám.");
+              }              
+              
+              try {
+                q.setWeight(Integer.parseInt(values[6].trim()));
+              }
+              catch (NumberFormatException e) {
+                throw new IllegalArgumentException("A megadott súly érták nem szám.");
               }              
               
               questions.add(q);
@@ -181,8 +190,17 @@ public class QuestionManager implements Serializable {
     LOGGER.debug("Kérdések mentése...");
     QuestionDao questionDao = new QuestionDaoMysql();
 
-    LOGGER.debug("...most még nem mentünk.");   
-//    questionDao.saveAllQuestions(questions, append);
+    LOGGER.debug("append = " + append);
+    
+    int i = 0;
+    for (Question q : questions) {
+      i++;
+      LOGGER.debug(i + ". kérdés: " + q.getText() + ";" + q.getExplanation() + ";" + q.isActive() + q.isUnequivocal() + q.isIndiscreet() + ";" + q.getWeight() + ";" + q.getCategory().getId());
+    }
+    
+    LOGGER.debug("Mentünk.");   
+    questionDao.saveAllQuestions(questions, append);
+    LOGGER.debug("Mentés vége.");   
   }
           
   public List<Question> getActiveQuestions(boolean noEquivocal, boolean addIndiscreet) {
@@ -264,14 +282,18 @@ public class QuestionManager implements Serializable {
     try {
       response.setCharacterEncoding("UTF-8");
       writer = response.getWriter();
-      writer.println("KÉRDÉS" + CSV_DELIMITER + "KIEGÉSZÍTÉS" + CSV_DELIMITER + "AKTÍV" + CSV_DELIMITER + "ELLENŐRIZHETŐ" + CSV_DELIMITER + "KELLEMETLEN" + CSV_DELIMITER + "KATEGÓRIA");
+      writer.println("KÉRDÉS" + CSV_DELIMITER + "KIEGÉSZÍTÉS" + CSV_DELIMITER + "AKTÍV" + CSV_DELIMITER + "ELLENŐRIZHETŐ" + CSV_DELIMITER + "KELLEMETLEN" + CSV_DELIMITER + "SÚLY" + CSV_DELIMITER + "KATEGÓRIA");
       for (Question q : allQuestions) {
-        writer.println( q.getText() + CSV_DELIMITER + 
-                        q.getExplanation() + CSV_DELIMITER + 
-                        (q.isActive() ? "1" : "0") + CSV_DELIMITER +
-                        (q.isUnequivocal() ? "1" : "0") + CSV_DELIMITER +
-                        (q.isIndiscreet() ? "1" : "0") + CSV_DELIMITER +
-                        q.getCategory().getId() );
+        if (!q.isDerived()){
+          boolean active = q.isActive() || q.isComposite();
+          writer.println( q.getText() + CSV_DELIMITER + 
+                          q.getExplanation() + CSV_DELIMITER + 
+                          (active ? "1" : "0") + CSV_DELIMITER +
+                          (q.isUnequivocal() ? "1" : "0") + CSV_DELIMITER +
+                          (q.isIndiscreet() ? "1" : "0") + CSV_DELIMITER +
+                          (q.getWeight()) + CSV_DELIMITER +
+                          q.getCategory().getId() );
+        }
       }
       writer.close ();      
     } catch (IOException ex) {
@@ -300,6 +322,10 @@ public class QuestionManager implements Serializable {
 
   public void setCategories(List<Category> categories) {
     this.categories = categories;
+  }
+
+  public Locale getLocale() {
+    return new Locale("hu", "HU");
   }
   
 }

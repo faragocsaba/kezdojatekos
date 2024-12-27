@@ -184,7 +184,7 @@ public class QuestionDaoMysql implements QuestionDao, Serializable {
         pstmt.execute();
       }  
 
-      pstmt = conn.prepareStatement("insert into question (text, explanation, weight, is_active, is_unequivocal, is_indiscreet, category_id) values (?, ?, ?, ?, ?, ?);");
+      pstmt = conn.prepareStatement("insert into question (text, explanation, weight, is_active, is_unequivocal, is_indiscreet, category_id) values (?, ?, ?, ?, ?, ?, ?);");
 
       for (Question q : questions) {
         pstmt.setString(1, q.getText());

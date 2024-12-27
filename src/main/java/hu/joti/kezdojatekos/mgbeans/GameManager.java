@@ -94,12 +94,9 @@ public class GameManager implements Serializable {
           wQMap.put(mapSize + i, qIndex);
         }
       }
-      LOGGER.debug("wQMap size: " + wQMap.size());
       
       Random rnd = new Random();
       int rndIndex = rnd.nextInt(wQMap.size());
-//      LOGGER.debug("rndIndex: " + rndIndex);
-//      LOGGER.debug("wQMap index: " + wQMap.get(rndIndex));
       Question rndQuestion = availQuestions.get(wQMap.get(rndIndex));
       try {
         lastQuestion = (Question) rndQuestion.clone();
@@ -113,7 +110,7 @@ public class GameManager implements Serializable {
       if (brStart >= 0){
          int brEnd = lastQuestion.getText().indexOf("]");
          if (brEnd > brStart + 1){
-           String[] items = lastQuestion.getText().substring(brStart + 1, brEnd).split(";");
+           String[] items = lastQuestion.getText().substring(brStart + 1, brEnd).split("\\|");
 
            rndIndex = rnd.nextInt(items.length);
            newText = lastQuestion.getText().substring(0, brStart) + items[rndIndex] + lastQuestion.getText().substring(brEnd + 1);

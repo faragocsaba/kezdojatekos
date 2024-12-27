@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
@@ -37,15 +38,18 @@ public class ViewManager implements Serializable {
 
   public ViewManager() {
     LOGGER.debug("ViewManager starting");
-
-    chkAdmin();
   }
 
+  @PostConstruct
+  public void init() {
+    chkAdmin();
+  }
+    
   public void chkAdmin(){
     HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
     String username = request.getParameter("username");  
     admin = (username != null && isAdminLogin(username));
-    LOGGER.debug("username: " + username + ", " + "admin: " + admin);
+    LOGGER.info("username: " + username + ", " + "admin: " + admin);
   }
 
   public static boolean isAdminLogin(String name) {
