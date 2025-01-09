@@ -41,8 +41,12 @@ body {
 }
 
 table, th, td {
-  border: 0px solid;
+  border: none;
   text-align: center;
+}
+
+.separator {
+  border-top: 1px solid black;
 }
 
 .button {
@@ -72,6 +76,145 @@ table, th, td {
   border: transparent;
   background: transparent;
   color: transparent;
+}
+
+.menubutton {
+  flex: 1;
+  min-width: 30px;
+  max-width: 40px;
+  padding: 5px;
+  text-align: center;
+  border: none;
+  border-radius: 0px;
+  background: transparent;
+  cursor: pointer;
+  color: black;
+  font-family: 'Itim', cursive;
+  font-size: 28px;	
+  box-shadow: none;
+}
+
+.menubutton:hover {
+  transform: scale(1.1);
+  color: rgba(0, 0, 0, 0.8);
+  border: 1px black;
+  box-shadow: 1px white;
+}  
+
+.menubutton:active {
+  color: rgba(0, 0, 0, 0.2);
+}
+
+.menubutton:disabled {
+  border: transparent;
+  background: transparent;
+  color: transparent;
+}  
+
+.gamebutton {
+  flex: 1;
+  min-width: 80px;
+  max-width: 90px;
+  height: 60px;
+  padding: 5px;
+  text-align: center;
+  border: 1px solid black;
+  border-radius: 1px;
+  background: rgba(255, 255, 255, 0.4);
+  /*background: #ffffff linear-gradient(to bottom, rgba(255,255,255,0.8) 0%,rgba(255,255,255,0) 30%);*/
+  cursor: pointer;
+  color: black;
+  font-family: 'Itim', cursive;
+  font-size: 50px;	
+  box-shadow: #b0b0b0;
+  opacity: 0.9;
+}
+
+.gamebutton:hover {
+  color: rgba(0, 0, 0, 0.8);
+  border: 1px black;
+  box-shadow: 1px white;
+  transform: scale(1.05);
+}  
+
+.gamebutton:active {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.addplayerbutton {
+  flex: 1;
+  max-width: 40px !important;
+  height: 40px !important;
+  padding: 0px !important;
+  border: none !important;
+  border-radius: 0px;
+  background: transparent !important;
+  cursor: pointer;
+  color: black;
+  font-family: 'Itim', cursive;
+  font-size: 28px;	
+  box-shadow: none !important;
+}
+
+.addplayerbutton .ui-icon {
+  top: 25%;
+  left: 0%;
+  width: 40px; /* Ikon szélessége */
+  height: 40px; /* Ikon magassága */
+  font-size: 32px; /* Ikon méretét is beállítja, ha szükséges */
+}
+
+.addplayerbutton:hover {
+  color: rgba(0, 0, 0, 0.8);
+  border: 1px black !important;
+  box-shadow: none !important;
+  transform: scale(1.05);
+}  
+
+.addplayerbutton:active {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.delplayerbutton {
+  flex: 1;
+  max-width: 30px !important;
+  height: 30px !important;
+  padding: 0px !important;
+  border: none !important;
+  border-radius: 0px;
+  background: transparent !important;
+  cursor: pointer;
+  color: black;
+  font-family: 'Itim', cursive;
+  font-size: 28px;	
+  box-shadow: none;
+}
+
+.delplayerbutton .ui-icon {
+  top: 25%;
+  left: 0%;
+  width: 30px; /* Ikon szélessége */
+  height: 30px; /* Ikon magassága */
+  font-size: 28px; /* Ikon méretét is beállítja, ha szükséges */
+}
+
+.delplayerbutton:hover {
+  color: rgba(0, 0, 0, 0.8);
+  border: 1px black !important;
+  box-shadow: none !important;
+  transform: scale(1.05);
+}  
+
+.delplayerbutton:active {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.inputtextplayer{
+  font-family: 'Itim', cursive;
+  font-size: 24px;	
+  text-transform: uppercase;
+  text-align: left;
+  padding: 0px;
 }
 
 .starttext {
@@ -105,6 +248,24 @@ table, th, td {
   text-align: left;
 }
 
+.abouttext {
+  font-family: 'Itim', cursive;
+  font-size: 18px;	
+  font-weight: normal;
+  color: black;
+  text-align: left;
+}
+
+.recentqtext {
+  font-family: 'Itim', cursive;
+  font-size: 15px;	
+  font-weight: normal;
+  line-height: 1.0;
+  color: black;
+  text-align: left;
+  padding: 2px;
+}
+
 .input {
   font-family: 'Itim', cursive;
   width: 35px;
@@ -119,6 +280,94 @@ table, th, td {
   font-size: 14px;	
   color: red;
   line-height: 14px;
+}
+
+.gamepiece{
+  font-size: 24px;
+  color: black;
+}
+
+.div-sidebar {
+  overflow-y: auto;
+  scrollbar-width: auto; /* Firefox */
+  scrollbar-color: #758184 #f1f1f1;
+}
+
+.div-sidebar::-webkit-scrollbar {
+  width: 12px; /* vagy más érték a kívánt szélességhez */
+}
+
+.div-sidebar::-webkit-scrollbar-track {
+  background-color: #f1f1f1; /* a háttér színe */
+}
+
+.div-sidebar::-webkit-scrollbar-thumb {
+  background-color: #888; /* az aktív görgetősáv színe */
+  border-radius: 10px; /* görgetősáv szögletesítése */
+}
+
+.noheadertable table {
+  border-collapse: collapse !important; /* Egyesítjük a határokat */
+  border: none !important; /* Táblázat külső határainak eltávolítása */
+  background: transparent !important;
+}
+
+.noheadertable tbody {
+  border-collapse: collapse !important; /* Egyesítjük a határokat */
+  border: none !important; /* Táblázat külső határainak eltávolítása */
+  background: transparent !important;
+}
+
+.noheadertable td, 
+.noheadertable th {
+  border: none !important; /* Cellák közötti határok eltávolítása */
+}
+
+.noheadertable thead {
+  display: none;
+}
+
+.noheadertable .ui-datatable-odd,
+.noheadertable .ui-datatable-even {
+  border: none !important; /* Sorok közötti vonalak eltávolítása */
+  background: transparent !important;
+}
+
+.noheadertable tbody tr {
+  border: none !important; /* Esetleges maradék sorhatárok eltávolítása */
+}
+
+.noheadertable tbody td {
+  border: none !important; /* Cellák alatti határok eltávolítása */
+}
+
+.ui-inputtext::placeholder {
+  font-style: italic;  /* Dőlt betű stílus */
+  font-size: 18px;  /* Betűméret módosítása */
+}
+
+.ui-datatable thead th {
+  padding: 5px !important;
+}
+
+.ui-datatable tbody td.questioncol {
+  padding: 2px !important;
+  padding-bottom: 5px !important;
+  vertical-align: middle !important;
+  height: 100%;
+  display: table-cell !important;
+}
+
+.ui-datatable tbody tr.deciderrow {
+  border-top: 12px solid #D8DCDD;
+}
+
+.ui-datatable-odd tbody tr.deciderrow {
+  border-top: 12px solid #D8DCDD;
+}
+
+.ui-datatable-even tbody tr.deciderrow {
+  border-top: 12px solid #D8DCDD;
 }
 
 .ui-toggleswitch-slider {
@@ -148,3 +397,85 @@ table, th, td {
 .ui-toggleswitch.ui-toggleswitch-checked:not(.ui-state-disabled):hover .ui-toggleswitch-slider {
   background-color: #283593;
 }
+
+.ui-dialog {
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important; /* Középre igazítás */
+  width: 90vw !important; /* A képernyő 90%-a... */
+  max-width: 750px; /* ...de legfeljebb ennyi pixel */
+  height: 90vh; /* A magasság is 90% */
+  max-height: 90vh;
+  background-color: #d8dcdd;
+  overflow: hidden !important;
+}
+
+.ui-dialog-content {
+  max-height: 85vh !important;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #758184 #f1f1f1;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+  background-color: #d8dcdd;
+  color: black; 
+  font-weight: bold;
+  font-size: 20px;
+  border-bottom: none;
+}
+
+.ui-dialog .ui-dialog-content::-webkit-scrollbar {
+    width: 10px !important; /* Görgetősáv szélessége */
+}
+
+.ui-dialog .ui-dialog-content::-webkit-scrollbar-track {
+    background: #d8dcdd; /* Görgetősáv háttér */
+    border-radius: 10px; /* Lekerekített sarkok */
+}
+
+.ui-dialog .ui-dialog-content::-webkit-scrollbar-thumb {
+    background-color: #758184; 
+    border-radius: 10px;
+}
+
+.ui-button .ui-button-text {
+    line-height: 1.1;
+    white-space: pre-line;
+}
+
+.ui-datatable table{
+  font-family: 'Itim', cursive;
+  line-height: 1.0;
+  font-weight: normal;
+}
+
+.ui-datatable thead th {
+    font-family: 'Itim', cursive;
+    background-color: #d8dcdd !important; /* Háttérszín */
+    color: black; /* Szövegszín */
+    font-weight: bold; /* Félkövér szöveg */
+    font-size: 18px;
+    text-align: left; /* Középre igazított szöveg */
+    padding: 2px;
+    border-bottom: 2px solid #388E3C; /* Alsó szegély */
+}
+
+@media (pointer: none) {
+  .pointer-fine {
+    display: none;
+  }
+}
+
+@media (pointer: coarse) {
+  .pointer-fine {
+    display: none;
+  }
+}
+
+@media (pointer: fine) {
+  .pointer-none {
+    display: none;
+  }
+}
+

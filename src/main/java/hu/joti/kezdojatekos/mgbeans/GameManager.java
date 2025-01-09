@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package hu.joti.kezdojatekos.mgbeans;
 
+import hu.joti.kezdojatekos.model.BgImageManager;
 import javax.inject.Named;
 import javax.faces.bean.SessionScoped;
 import java.io.Serializable;
@@ -13,7 +9,10 @@ import java.util.List;
 import java.util.Random;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import hu.joti.kezdojatekos.model.Player;
 import hu.joti.kezdojatekos.model.Question;
+import hu.joti.kezdojatekos.model.Category;
+import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
 import javax.servlet.http.Part;
@@ -21,10 +20,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.primefaces.model.file.UploadedFile;
 
-/**
- *
- * @author Joti
- */
 @ManagedBean
 @Named(value = "gameManager")
 @SessionScoped
@@ -34,16 +29,19 @@ public class GameManager implements Serializable {
   QuestionManager questionManager;
 
   private List<Question> recentQuestions;
+  private List<Player> currentPlayers;
   private Question lastQuestion;
   private Part file;
   private UploadedFile inputfile;
 
-  private int questionIndex;
+  private int questionIndex; /* A recentQuestions hányadik eleme (1-től indul) */
   private boolean addIndiscreet = false;
   private boolean noEquivocal = false;
   private boolean adminPage = false;
   private boolean canLoadFile = false;
   private boolean fullLoad = false;
+  private int lastQuestionSeq = 0;
+  private int lastDeciderSeq = 0;
 
   // Az összes kérdés hány százalékának kell elfogynia ahhoz, hogy egy kérdés ismét előfordulhasson
   private static final double QUESTION_REPEAT_RATE = 0.3;
@@ -51,6 +49,7 @@ public class GameManager implements Serializable {
 
   public GameManager() {
     recentQuestions = new ArrayList<>();
+    currentPlayers = new ArrayList<>();
     lastQuestion = null;
     LOGGER.trace("GameManager starting");
   }
@@ -63,8 +62,8 @@ public class GameManager implements Serializable {
   }
 
   public void newQuestion(){
-     questionIndex = recentQuestions.size();
-     nextQuestion();
+    questionIndex = recentQuestions.size();
+    nextQuestion();
   }
 
   public void nextQuestion(){
@@ -119,6 +118,9 @@ public class GameManager implements Serializable {
          }
       }  
 
+      lastQuestion.setSeq(++lastQuestionSeq);
+      lastQuestion.setPlayers(currentPlayers);
+      lastQuestion.setWinners(new ArrayList<>());
       recentQuestions.add(lastQuestion);
       questionIndex++;
       
@@ -146,6 +148,24 @@ public class GameManager implements Serializable {
     canLoadFile = false;
     questionManager.saveQuestions(questions, !fullLoad);
   }
+
+  public void addPlayer(){
+    int playerId = currentPlayers.size() + 1;
+    Player player = new Player(playerId, "", "");
+    currentPlayers.add(player);
+  }
+
+  public void removePlayer(Player player){
+    for (Player p : currentPlayers) {
+      if (p.getSeq() > player.getSeq())
+        p.setSeq(p.getSeq() - 1);
+    }
+    currentPlayers.remove(player);
+  }
+  
+  public boolean hasPlayers(){
+    return !currentPlayers.isEmpty();
+  }
   
   public QuestionManager getQuestionManager() {
     return questionManager;
@@ -155,7 +175,14 @@ public class GameManager implements Serializable {
     return recentQuestions.size();
   }
 
+  public void clearQuestions(){
+    recentQuestions.clear();
+  }
+
   public String getLastQuestionText(){
+    if (lastQuestion == null)
+      return "";
+      
     if (!(lastQuestion.getExplanation().isEmpty()))
       return lastQuestion.getText().toUpperCase() + "\u00A0" + "*";
     else 
@@ -163,6 +190,9 @@ public class GameManager implements Serializable {
   }
 
   public String getLastQuestionExplanation(){
+    if (lastQuestion == null)
+      return "";
+
     String explanation = lastQuestion.getExplanation().toUpperCase();
     if (!explanation.isEmpty())
       explanation = "* " + explanation;
@@ -185,6 +215,14 @@ public class GameManager implements Serializable {
     return recentQuestions;
   }
 
+  public List<Question> getRecentQuestionsReverse(boolean skipLast) {
+    List<Question> reverseQuestions = new ArrayList<>(recentQuestions);
+    if (reverseQuestions.size() > 0 && skipLast)
+      reverseQuestions.remove(reverseQuestions.size() - 1);
+    Collections.reverse(reverseQuestions);
+    return reverseQuestions;
+  }
+
   public void setRecentQuestions(List<Question> recentQuestions) {
     this.recentQuestions = recentQuestions;
   }
@@ -195,6 +233,26 @@ public class GameManager implements Serializable {
 
   public void setQuestionIndex(int questionIndex) {
     this.questionIndex = questionIndex;
+    if (questionIndex == 0) {
+      if (lastQuestion != null){
+        lastQuestion.setDecider(true);
+        lastDeciderSeq = lastQuestion.getSeq();
+        lastQuestion = null;
+        
+        List<Player> clonedPlayers = new ArrayList<>();
+        try {
+          for (Player p : currentPlayers) {
+            clonedPlayers.add((Player)p.clone());
+          }
+        } catch (CloneNotSupportedException ex) {
+          LOGGER.error(ex.toString());
+        }
+        currentPlayers = clonedPlayers;
+
+      }          
+    }  
+    else
+      lastQuestion = recentQuestions.get(questionIndex - 1);
   }
 
   public boolean isAddIndiscreet() {
@@ -252,5 +310,33 @@ public class GameManager implements Serializable {
   public void setFullLoad(boolean fullLoad) {
     this.fullLoad = fullLoad;
   }
+
+  public String getBgImage() {
+    Category category = null;
+    if (lastQuestion != null)
+      category = lastQuestion.getCategory();
+
+    String bgImage = BgImageManager.getBgImageFileName(category);
+    LOGGER.info("bgImage = " + bgImage);
+    return bgImage;
+  }
+
+  public int getLastQuestionSeq() {
+    return lastQuestionSeq;
+  }
+
+  public int getLastDeciderSeq() {
+    LOGGER.info("lastDeciderSeq: " + lastDeciderSeq);
+    return lastDeciderSeq;
+  }
+
+  public List<Player> getCurrentPlayers() {
+    return currentPlayers;
+  }
+
+  public void setCurrentPlayers(List<Player> currentPlayers) {
+    this.currentPlayers = currentPlayers;
+  }
   
+
 }

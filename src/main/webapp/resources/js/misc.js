@@ -13,3 +13,17 @@ function getfilename() {
     }
   }
 }
+
+function addOutsideClickListener() {
+    $(document).on('click.outsideDialog', function(event) {
+        const dialog = $('.ui-dialog');
+        if (!dialog.is(event.target) && dialog.has(event.target).length === 0) {
+            PF('dlg_about').hide();
+            $(document).off('click.outsideDialog');
+        }
+    });
+}
+
+function removeOutsideClickListener() {
+    $(document).off('click.outsideDialog');
+}

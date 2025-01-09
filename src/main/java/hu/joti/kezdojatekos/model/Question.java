@@ -1,16 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package hu.joti.kezdojatekos.model;
 
 import java.io.Serializable;
+import java.util.List;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-/**
- * @author Joti
- */
 public class Question implements Serializable, Cloneable {
 
   private int id;
@@ -22,8 +16,14 @@ public class Question implements Serializable, Cloneable {
   private boolean indiscreet;
   private Category category;
   
+  private List<Player> players;
+  private List<Player> winners;
   private boolean composite;
   private boolean derived;
+  private boolean decider;
+  private int seq;
+
+  private static final Logger LOGGER = LogManager.getLogger(Question.class.getName());
 
   public Question(int id, String text, String explanation, int weight, boolean active, boolean unequivocal, boolean indiscreet, Category category) {
     this.id = id;
@@ -122,6 +122,38 @@ public class Question implements Serializable, Cloneable {
 
   public void setDerived(boolean derived) {
     this.derived = derived;
+  }
+
+  public boolean isDecider() {
+    return decider;
+  }
+
+  public void setDecider(boolean decider) {
+    this.decider = decider;
+  }
+
+  public int getSeq() {
+    return seq;
+  }
+
+  public void setSeq(int seq) {
+    this.seq = seq;
+  }
+
+  public List<Player> getPlayers() {
+    return players;
+  }
+
+  public void setPlayers(List<Player> players) {
+    this.players = players;
+  }
+
+  public List<Player> getWinners() {
+    return winners;
+  }
+
+  public void setWinners(List<Player> winners) {
+    this.winners = winners;
   }
   
 }
