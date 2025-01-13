@@ -2,6 +2,7 @@ package hu.joti.kezdojatekos.model;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,7 +18,7 @@ public class Question implements Serializable, Cloneable {
   private Category category;
   
   private List<Player> players;
-  private List<Player> winners;
+  private Set<Player> winners;
   private boolean composite;
   private boolean derived;
   private boolean decider;
@@ -148,11 +149,11 @@ public class Question implements Serializable, Cloneable {
     this.players = players;
   }
 
-  public List<Player> getWinners() {
+  public Set<Player> getWinners() {
     return winners;
   }
 
-  public void setWinners(List<Player> winners) {
+  public void setWinners(Set<Player> winners) {
     this.winners = winners;
   }
   

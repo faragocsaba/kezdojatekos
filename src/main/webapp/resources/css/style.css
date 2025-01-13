@@ -154,6 +154,7 @@ table, th, td {
   font-family: 'Itim', cursive;
   font-size: 28px;	
   box-shadow: none !important;
+  text-shadow: 0 1px 0 grey !important;
 }
 
 .addplayerbutton .ui-icon {
@@ -211,10 +212,18 @@ table, th, td {
 
 .inputtextplayer{
   font-family: 'Itim', cursive;
-  font-size: 24px;	
+  font-size: 18px !important;	
   text-transform: uppercase;
   text-align: left;
-  padding: 0px;
+  padding: 5px 3px 1px 3px !important;
+}
+
+.outputtextplayer{
+  font-family: 'Itim', cursive;
+  font-size: 24px !important;	
+  text-transform: uppercase;
+  text-align: left;
+  padding: 5px 3px 1px 3px !important;
 }
 
 .starttext {
@@ -254,6 +263,7 @@ table, th, td {
   font-weight: normal;
   color: black;
   text-align: left;
+  line-height: 1.3;
 }
 
 .recentqtext {
@@ -310,6 +320,7 @@ table, th, td {
   border-collapse: collapse !important; /* Egyesítjük a határokat */
   border: none !important; /* Táblázat külső határainak eltávolítása */
   background: transparent !important;
+  table-layout: fixed;
 }
 
 .noheadertable tbody {
@@ -337,13 +348,200 @@ table, th, td {
   border: none !important; /* Esetleges maradék sorhatárok eltávolítása */
 }
 
+.noheadertable tbody td:first-child {
+  width: 60px !important;
+  box-sizing: border-box; /* A padding és border beleszámít a 40 pixelbe */
+  padding: 4px 5px 4px 0px !important;
+}
+
 .noheadertable tbody td {
   border: none !important; /* Cellák alatti határok eltávolítása */
+  width: auto; /* Ez az oszlop rugalmas lesz */
+}
+
+.simpleheadertable {
+  border: none !important; /* Cellák alatti határok eltávolítása */
+  background: transparent !important;
+  border-collapse: collapse !important; /* Egyesítjük a határokat */
+}
+
+.simpleheadertable thead th {
+  border: none !important; /* Cellák alatti határok eltávolítása */
+  background: transparent !important;
+  border-collapse: collapse !important; /* Egyesítjük a határokat */
+  box-shadow: none !important;
+}
+
+.simpleheadertable tbody tr:first-child {
+  border-top: 12px solid #D8DCDD;
+}
+
+.player-box {
+  display: inline-flex; /* Flexbox elrendezés a dobozon belül */
+  align-items: center; /* Szöveg és négyzet középre igazítása vertikálisan */
+  margin: 3px; /* Távolság a dobozok között */
+  padding: 3px; /* Belül kis térköz */
+  border: 1px solid #ccc; /* Opciósan keret a doboznak */
+  border-radius: 5px; /* Lekerekített sarkok */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Opciósan árnyék */
+  text-transform: uppercase;
+}
+
+.color-box {
+  width: 15px;
+  height: 15px;
+  margin-right: 5px; /* Távolság a négyzet és a szöveg között */
+  border: 1px solid #000; /* Opciósan keret a négyzetnek */
+}
+
+.player-name{
+  font-family: 'Itim', cursive;
+  font-size: 15px;	
+  font-weight: normal;
+  line-height: 1.0;
+  color: black;
+  text-align: left;
+  padding: 2px;
+}
+
+.ui-column-content {
+  display: flex;
+  flex-wrap: wrap; /* Automatikus törés több sorba, ha szükséges */
+  margin-left: 5px; /* Távolság a dobozok között */
+}
+
+#pageform\:colorPicker_0 {
+  background-color: red !important;
+  color: white !important;
+}
+
+#pageform\:colorPicker_1 {
+  background-color: green !important;
+  color: white !important;
+}
+
+#pageform\:colorPicker_2 {
+  background-color: blue !important;
+  color: white !important;
+}
+
+#pageform\:colorPicker_3 {
+  background-color: yellow !important;
+  color: black !important;
+}
+    
+/* Alapértelmezett stílus a menü szöveges részére */
+.ui-selectonemenu-label {
+  color: black !important; /* Alapértelmezett szövegszín */
+  font-weight: bold; /* A szöveg jobban látható */
+}
+
+.playercheckbox{
+  background-color: white; 
+  height: 30px; 
+  width: 30px; 
+  box-shadow: 1px 1px 0 grey;
+}  
+
+.playercheckbox:hover{
+  background-color: #eeeeee; 
+  transform: scale(1.05);
+}
+
+.ui-chkbox .ui-chkbox-box{
+  width: 16px !important;
+  height: 16px !important;
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  transform: scale(2) !important;
+}
+
+.ui-colorpicker {
+  width: 100% !important; /* A színválasztó gomb szélessége */
+  height: 30px !important; /* A színválasztó gomb magassága */
+  padding: 0px !important; /* Eltávolítja az alapértelmezett belső margót */
+  border: none !important; /* Szükség esetén lekerekíti a széleket */
+  overflow: hidden; /* Biztosítja, hogy a tartalom ne nyúljon túl */
+  display: flex; /* Inline blokkra állítja a gombot */
+  align-items: center;
+  justify-content: space-between;
+  border: none;
+}
+
+.ui-colorpicker .ui-button-text {
+  padding: 0.3em 0.5em;
+}  
+
+.ui-colorpicker .ui-button {
+  background: transparent;
+  color: white;
+  width: 100% !important;
+  height: 100% !important;
+  margin-top:2px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  text-shadow: none;
+  color: transparent;
+}
+
+.ui-colorpicker .ui-button .ui-button-text {
+    width: 100% !important;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.ui-colorpicker .ui-button-text {
+    width: 100% !important;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.custom-select-menu .ui-selectonemenu-label:contains("Piros") {
+    background-color: red !important;
+    color: white !important;
+}
+.custom-select-menu .ui-selectonemenu-label:contains("Zöld") {
+    background-color: green !important;
+    color: white !important;
+}
+.custom-select-menu .ui-selectonemenu-label:contains("Kék") {
+    background-color: blue !important;
+    color: white !important;
+}
+.custom-select-menu .ui-selectonemenu-label:contains("Sárga") {
+    background-color: yellow !important;
+    color: black !important;
+}
+
+.custom-color-dropdown {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.custom-color-item {
+    padding: 5px 10px;
+    margin: 2px 0;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.custom-color-item:hover {
+    filter: brightness(90%);
 }
 
 .ui-inputtext::placeholder {
   font-style: italic;  /* Dőlt betű stílus */
-  font-size: 18px;  /* Betűméret módosítása */
+  font-size: 16px;  /* Betűméret módosítása */
 }
 
 .ui-datatable thead th {
@@ -370,6 +568,11 @@ table, th, td {
   border-top: 12px solid #D8DCDD;
 }
 
+.ui-toggleswitch{
+  height: 30px !important;
+  width: 60px !important;
+}
+
 .ui-toggleswitch-slider {
   -webkit-transition: background-color 0.3s, box-shadow 0.2s;
   transition: background-color 0.3s, box-shadow 0.2s;
@@ -378,12 +581,20 @@ table, th, td {
 
 .ui-toggleswitch-slider:before {
   background-color: #ffffff;
+  height: 20px !important;
+  width: 20px !important;
+  left: 10px !important;
+  bottom: 5px !important;
 }
 
 .ui-toggleswitch-focus .ui-toggleswitch-slider {
   -moz-box-shadow: 0px 0px 5px #c0c0c0;
   -webkit-box-shadow: 0px 0px 5px #c0c0c0;
   box-shadow: 0px 0px 5px #c0c0c0;
+}
+
+.ui-toggleswitch-checked .ui-toggleswitch-slider:before {
+  transform: translateX(25px) !important;
 }
 
 .ui-toggleswitch:not(.ui-state-disabled):hover .ui-toggleswitch-slider {
@@ -403,7 +614,7 @@ table, th, td {
   left: 50% !important;
   transform: translate(-50%, -50%) !important; /* Középre igazítás */
   width: 90vw !important; /* A képernyő 90%-a... */
-  max-width: 750px; /* ...de legfeljebb ennyi pixel */
+  max-width: 800px; /* ...de legfeljebb ennyi pixel */
   height: 90vh; /* A magasság is 90% */
   max-height: 90vh;
   background-color: #d8dcdd;
@@ -411,6 +622,7 @@ table, th, td {
 }
 
 .ui-dialog-content {
+  padding-top: 0px !important;
   max-height: 85vh !important;
   overflow-y: auto;
   scrollbar-width: thin;
@@ -418,7 +630,7 @@ table, th, td {
 }
 
 .ui-dialog .ui-dialog-titlebar {
-  background-color: #d8dcdd;
+  background: #d8dcdd !important;
   color: black; 
   font-weight: bold;
   font-size: 20px;
@@ -459,6 +671,137 @@ table, th, td {
     text-align: left; /* Középre igazított szöveg */
     padding: 2px;
     border-bottom: 2px solid #388E3C; /* Alsó szegély */
+}
+
+/************************/
+/* ConfirmDialog elemei */
+/************************/
+
+.confirmdialog{
+  width: 400px !important;
+  max-width: 80%;
+/*  position: absolute;
+  left: 38% !important;
+  top: 250px !important;*/
+  background-color: #d8dcdd;
+  font-family: 'Itim', cursive;
+  text-transform: uppercase;
+  border: 2px solid;
+  border-color: #808571;
+  padding: 2px;
+  z-index: 100000;
+}
+
+/* Fejléc */
+
+div.ui-dialog-titlebar.ui-widget-header.ui-helper-clearfix.ui-corner-top {
+  background-color: #d8dcdd;
+}
+
+/* "Megerősítés" szöveg */
+span.ui-dialog-title{
+  font-family: 'Itim', cursive;
+  font-size: 16px;	
+  font-weight: bold;
+  color: #808571;
+  display: none;
+}
+
+/* x a sarokban */
+.ui-dialog-titlebar-icon.ui-dialog-titlebar-close.ui-corner-all{
+  background-color: #d8dcdd;
+  color: black;
+}
+
+/* Ikon eltüntetése a kérdés mellől */
+.ui-dialog-content > .ui-icon {
+  display: none;
+}
+
+/* kérdés szövege */
+.ui-confirm-dialog .ui-dialog-content{
+  padding: 0 10px 16px 10px;
+  text-align: center;
+}
+
+span.ui-confirm-dialog-message {
+  font-family: 'Itim', cursive;
+  font-size: 24px;	
+  font-weight: normal;
+  line-height: 1.5 !important;
+  color: black;
+}
+
+/* gombok befoglalója */
+.ui-dialog-buttonpane.ui-dialog-footer.ui-widget-content.ui-helper-clearfix{
+  background-color: #d8dcdd;
+  color: black;
+  text-align: center;
+  left: 0;
+  right: 0;
+  width: 100%;
+  margin: auto;
+}
+
+/* "Igen" gomb */
+.ui-button.ui-widget.ui-state-default.ui-corner-all.ui-button-text-only.ui-confirmdialog-yes{
+  flex: 1;
+  min-width: 110px;
+  max-width: 120px;
+  height: 60px;
+  padding: 5px;
+  text-align: center;
+  border: 1px solid black;
+  border-radius: 1px;
+  background: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  color: black;
+  font-family: 'Itim', cursive;
+  font-size: 24px;	
+  box-shadow: #b0b0b0;
+  opacity: 0.9;
+}
+
+.ui-button.ui-widget.ui-state-default.ui-corner-all.ui-button-text-only.ui-confirmdialog-yes:hover {
+  color: rgba(0, 0, 0, 0.8);
+  border: 1px black;
+  box-shadow: 1px white;
+  transform: scale(1.05);
+}
+
+.ui-button.ui-widget.ui-state-default.ui-corner-all.ui-button-text-only.ui-confirmdialog-yes:active {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* "Nem" gomb */
+.ui-button.ui-widget.ui-state-default.ui-corner-all.ui-button-text-only.ui-confirmdialog-no{
+  flex: 1;
+  min-width: 110px;
+  max-width: 120px;
+  height: 60px;
+  padding: 5px;
+  text-align: center;
+  border: 1px solid black;
+  border-radius: 1px;
+  background: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  color: black;
+  font-family: 'Itim', cursive;
+  font-size: 24px;	
+  box-shadow: #b0b0b0;
+  opacity: 0.9;
+  padding: 0 !important;
+}
+
+.ui-button.ui-widget.ui-state-default.ui-corner-all.ui-button-text-only.ui-confirmdialog-no:hover {
+  color: rgba(0, 0, 0, 0.8);
+  border: 1px black;
+  box-shadow: 1px white;
+  transform: scale(1.05);
+}
+
+.ui-button.ui-widget.ui-state-default.ui-corner-all.ui-button-text-only.ui-confirmdialog-no:active {
+  background: rgba(0, 0, 0, 0.2);
 }
 
 @media (pointer: none) {

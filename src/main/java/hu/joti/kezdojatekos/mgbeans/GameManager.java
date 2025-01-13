@@ -13,11 +13,13 @@ import hu.joti.kezdojatekos.model.Player;
 import hu.joti.kezdojatekos.model.Question;
 import hu.joti.kezdojatekos.model.Category;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.TreeMap;
 import javax.servlet.http.Part;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.primefaces.PrimeFaces;
 import org.primefaces.model.file.UploadedFile;
 
 @ManagedBean
@@ -42,7 +44,7 @@ public class GameManager implements Serializable {
   private boolean fullLoad = false;
   private int lastQuestionSeq = 0;
   private int lastDeciderSeq = 0;
-
+  
   // Az összes kérdés hány százalékának kell elfogynia ahhoz, hogy egy kérdés ismét előfordulhasson
   private static final double QUESTION_REPEAT_RATE = 0.3;
   private static final Logger LOGGER = LogManager.getLogger(GameManager.class.getName());
@@ -51,13 +53,18 @@ public class GameManager implements Serializable {
     recentQuestions = new ArrayList<>();
     currentPlayers = new ArrayList<>();
     lastQuestion = null;
+
     LOGGER.trace("GameManager starting");
   }
 
   public void prevQuestion(){
     if (questionIndex > 1){
+      setLastQuestionWinners();
+      
       questionIndex--;
       lastQuestion = recentQuestions.get(questionIndex - 1);
+
+      setWinnerPlayers(lastQuestion);
     }
   }
 
@@ -66,14 +73,43 @@ public class GameManager implements Serializable {
     nextQuestion();
   }
 
+  public void setLastQuestionWinners(){
+    if (lastQuestion != null){
+      for (Player p : currentPlayers) {
+        if (p.isWinner()){
+          lastQuestion.getWinners().add(p);
+        } else {
+          lastQuestion.getWinners().remove(p);
+        }
+      }
+    }  
+  }
+
+  public void setWinnerPlayers(Question question){
+    for (Player p : currentPlayers) {
+      if (question != null)
+        p.setWinner(question.getWinners().contains(p));
+      else
+        p.setWinner(false);
+    }
+  } 
+  
   public void nextQuestion(){
+
+    setLastQuestionWinners();
     
     if (questionIndex < recentQuestions.size()){
+
       questionIndex++;
       lastQuestion = recentQuestions.get(questionIndex - 1);
+
+      setWinnerPlayers(lastQuestion);
+      
     } else {
     
       LOGGER.debug("questionIndex: " + questionIndex);
+
+      setWinnerPlayers(null);
       
       List<Question> availQuestions = new ArrayList<>(questionManager.getActiveQuestions(noEquivocal, addIndiscreet));
       int allSize = availQuestions.size();
@@ -120,7 +156,7 @@ public class GameManager implements Serializable {
 
       lastQuestion.setSeq(++lastQuestionSeq);
       lastQuestion.setPlayers(currentPlayers);
-      lastQuestion.setWinners(new ArrayList<>());
+      lastQuestion.setWinners(new HashSet<>());
       recentQuestions.add(lastQuestion);
       questionIndex++;
       
@@ -149,6 +185,16 @@ public class GameManager implements Serializable {
     questionManager.saveQuestions(questions, !fullLoad);
   }
 
+  public void addPlayer(String color){
+    int playerId = currentPlayers.size() + 1;
+    Player player = new Player(playerId, "", color);
+    currentPlayers.add(player);
+    LOGGER.trace("New player: " + player.getSeq() + " - " + player.getColor());
+    
+    // Fókusz az új sor input mezőjére
+    PrimeFaces.current().executeScript("setTimeout(function() { document.getElementById('pageform:dt_currentplayers:" + (currentPlayers.size() - 1) + ":it_pname').focus(); }, 100);");
+  }
+
   public void addPlayer(){
     int playerId = currentPlayers.size() + 1;
     Player player = new Player(playerId, "", "");
@@ -161,6 +207,33 @@ public class GameManager implements Serializable {
         p.setSeq(p.getSeq() - 1);
     }
     currentPlayers.remove(player);
+  }
+
+  public String getPlayerPointsText (Player player){
+    int points = getPlayerPoints(player);
+    if (points == 0)
+      return "";
+    return points + " pont";
+  }
+  
+  public int getPlayerPoints (Player player){
+    int points = 0;
+
+    if (lastQuestion != null){
+      for (int i = recentQuestions.size() - 1; i >= 0; i--) {
+        Question q = recentQuestions.get(i);
+        if (q != lastQuestion){
+          if (q.getWinners().contains(player)){
+            points++;
+          }  
+        }
+      }
+      
+      if (player.isWinner())
+        points++;
+    }
+
+    return points;
   }
   
   public boolean hasPlayers(){
@@ -217,9 +290,19 @@ public class GameManager implements Serializable {
 
   public List<Question> getRecentQuestionsReverse(boolean skipLast) {
     List<Question> reverseQuestions = new ArrayList<>(recentQuestions);
-    if (reverseQuestions.size() > 0 && skipLast)
-      reverseQuestions.remove(reverseQuestions.size() - 1);
+    if (reverseQuestions.size() > 0){
+      if (skipLast)
+        reverseQuestions.remove(reverseQuestions.size() - 1);
+      else if (lastQuestion != null) {
+        Question q = reverseQuestions.get(reverseQuestions.size() - 1);
+        if (q == lastQuestion){
+          setLastQuestionWinners();
+        }
+      }  
+    }
+    
     Collections.reverse(reverseQuestions);
+    
     return reverseQuestions;
   }
 
@@ -235,9 +318,14 @@ public class GameManager implements Serializable {
     this.questionIndex = questionIndex;
     if (questionIndex == 0) {
       if (lastQuestion != null){
+
+        setLastQuestionWinners();
+
         lastQuestion.setDecider(true);
         lastDeciderSeq = lastQuestion.getSeq();
         lastQuestion = null;
+        
+        setWinnerPlayers(null);
         
         List<Player> clonedPlayers = new ArrayList<>();
         try {
@@ -251,8 +339,11 @@ public class GameManager implements Serializable {
 
       }          
     }  
-    else
+    else {
+      setLastQuestionWinners();
       lastQuestion = recentQuestions.get(questionIndex - 1);
+      setWinnerPlayers(lastQuestion);
+    }  
   }
 
   public boolean isAddIndiscreet() {
@@ -317,7 +408,7 @@ public class GameManager implements Serializable {
       category = lastQuestion.getCategory();
 
     String bgImage = BgImageManager.getBgImageFileName(category);
-    LOGGER.info("bgImage = " + bgImage);
+    LOGGER.trace("bgImage = " + bgImage);
     return bgImage;
   }
 
@@ -326,7 +417,6 @@ public class GameManager implements Serializable {
   }
 
   public int getLastDeciderSeq() {
-    LOGGER.info("lastDeciderSeq: " + lastDeciderSeq);
     return lastDeciderSeq;
   }
 
@@ -337,6 +427,5 @@ public class GameManager implements Serializable {
   public void setCurrentPlayers(List<Player> currentPlayers) {
     this.currentPlayers = currentPlayers;
   }
-  
 
 }

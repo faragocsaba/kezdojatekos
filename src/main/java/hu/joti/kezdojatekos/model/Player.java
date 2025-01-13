@@ -1,12 +1,18 @@
 package hu.joti.kezdojatekos.model;
 
 import java.io.Serializable;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Player implements Serializable, Cloneable {
 
   private int seq;
   private String name;
   private String color;
+  
+  private boolean winner;
+
+  private static final Logger LOGGER = LogManager.getLogger(Player.class.getName());
 
   public Player() {
   }
@@ -44,6 +50,14 @@ public class Player implements Serializable, Cloneable {
 
   public void setColor(String color) {
     this.color = color;
+  }
+
+  public boolean isWinner() {
+    return winner;
+  }
+
+  public void setWinner(boolean winner) {
+    this.winner = winner;
   }
   
 }
