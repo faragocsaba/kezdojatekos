@@ -294,10 +294,7 @@ public class GameManager implements Serializable {
       if (skipLast)
         reverseQuestions.remove(reverseQuestions.size() - 1);
       else if (lastQuestion != null) {
-        Question q = reverseQuestions.get(reverseQuestions.size() - 1);
-        if (q == lastQuestion){
-          setLastQuestionWinners();
-        }
+        setLastQuestionWinners();
       }  
     }
     
