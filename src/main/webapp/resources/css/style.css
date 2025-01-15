@@ -277,9 +277,25 @@ table, th, td {
   color: black;
 }
 
-.question {
+.questiontext {
   font-family: 'Itim', cursive;
   font-size: 24px;	
+  font-weight: bold;
+  color: black;
+  text-align: center;
+}
+
+.questiontextmedium {
+  font-family: 'Itim', cursive;
+  font-size: 22px;	
+  font-weight: bold;
+  color: black;
+  text-align: center;
+}
+
+.questiontextsmall {
+  font-family: 'Itim', cursive;
+  font-size: 20px;	
   font-weight: bold;
   color: black;
   text-align: center;
@@ -535,52 +551,53 @@ table, th, td {
 }
 
 .ui-colorpicker .ui-button .ui-button-text {
-    width: 100% !important;
-    align-items: center;
-    justify-content: space-between;
+  width: 100% !important;
+  align-items: center;
+  justify-content: center;
+  display: flex;
 }
 
 .ui-colorpicker .ui-button-text {
-    width: 100% !important;
-    align-items: center;
-    justify-content: space-between;
+  width: 100% !important;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .custom-select-menu .ui-selectonemenu-label:contains("Piros") {
-    background-color: red !important;
-    color: white !important;
+  background-color: red !important;
+  color: white !important;
 }
 .custom-select-menu .ui-selectonemenu-label:contains("Zöld") {
-    background-color: green !important;
-    color: white !important;
+  background-color: green !important;
+  color: white !important;
 }
 .custom-select-menu .ui-selectonemenu-label:contains("Kék") {
-    background-color: blue !important;
-    color: white !important;
+  background-color: blue !important;
+  color: white !important;
 }
 .custom-select-menu .ui-selectonemenu-label:contains("Sárga") {
-    background-color: yellow !important;
-    color: black !important;
+  background-color: yellow !important;
+  color: black !important;
 }
 
 .custom-color-dropdown {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
 }
 
 .custom-color-item {
-    padding: 5px 10px;
-    margin: 2px 0;
-    border-radius: 3px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    cursor: pointer;
+  padding: 5px 10px;
+  margin: 2px 0;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
 }
 
 .custom-color-item:hover {
-    filter: brightness(90%);
+  filter: brightness(90%);
 }
 
 .ui-inputtext::placeholder {

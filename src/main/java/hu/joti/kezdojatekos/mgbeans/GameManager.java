@@ -262,6 +262,17 @@ public class GameManager implements Serializable {
       return lastQuestion.getText().toUpperCase();
   }
 
+  public String getLastQuestionClass(){
+    if (lastQuestion != null){
+      int len = lastQuestion.getText().length();
+      if (len > 70)
+        return "questiontextsmall";
+      if (len > 50)
+        return "questiontextmedium";
+    }
+    return "questiontext";
+  }
+
   public String getLastQuestionExplanation(){
     if (lastQuestion == null)
       return "";

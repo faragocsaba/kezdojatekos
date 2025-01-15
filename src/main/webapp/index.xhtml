@@ -59,8 +59,8 @@
             <span class="gamepiece" style="color: darkorange;">&#9823;</span> ALAPÉRTELMEZÉSBEN EZ EGY EGYFORDULÓS, EGYPERCES JÁTÉK, DE JÁTSZHATJÁTOK AKÁR PONTOZÁSSAL, TÖBB NYERT FORDULÓIG IS. (AZ OLDAL EBBEN IS SEGÍTSÉGET NYÚJT.) 
             ÍGY UGYAN HOSSZABB IDEIG TART, DE ENNEK SORÁN EGYMÁSRÓL IS MEGTUDHATUNK ÉRDEKES DOLGOKAT.
             <br/><br/>
-            <span class="gamepiece" style="color: darkred;">&#9823;</span> A LEGTÖBB KÉRDÉS ARRA VONATKOZIK, HOGY KI CSINÁLT VALAMIT LEGUTÓBB. VISZONT BÁTORÍTJUK A JÁTÉKOSOKAT, HOGY MESÉLJENEK EL EGY SZTORIT. 
-            HA VALAKI KÖZFELKIÁLTÁSSAL A LEGJOBB SZTORIT MESÉLI, AKKOR Ő LEHET A KEZDŐJÁTÉKOS.
+            <span class="gamepiece" style="color: darkred;">&#9823;</span> A LEGTÖBB KÉRDÉS ARRA VONATKOZIK, HOGY KI CSINÁLT VALAMIT LEGUTÓBB. BÁTORÍTJUK A JÁTÉKOSOKAT, HOGY MESÉLJENEK EL EGY EHHEZ KAPCSOLÓDÓ SZTORIT, 
+            ÉS HA VALAKI KÖZFELKIÁLTÁSSAL A LEGJOBB SZTORIT MESÉLI, AKKOR Ő LEHET A KEZDŐJÁTÉKOS.
             <br/><br/>
             <span class="gamepiece" style="color: darkgreen;">&#9823;</span> HA FONTOS, HOGY A KÉRDÉSEKRE EGZAKT VÁLASZT LEHESSEN ADNI, JELÖLJÉTEK BE A „CSAK ELLENŐRIZHETŐ KÉRDÉSEK” OPCIÓT A BEÁLLÍTÁSOK KÖZÖTT. 
             A JÁTÉKBAN SZEREPELNEK „KELLEMETLEN” KÉRDÉSEK IS, DE ILYENEKET CSAK AKKOR KAPHATTOK, HA A BEÁLLÍTÁSOK KÖZÖTT BEKAPCSOLJÁTOK ENNEK LEHETŐSÉGÉT.
@@ -88,9 +88,11 @@
               <tr>
                 <td style="padding-top:5px;width: 100%;">
                   <p:dataTable class="noheadertable" id="dt_currentplayers" var="player" value="#{gameManager.currentPlayers}" rendered="#{gameManager.hasPlayers() eq true}">
-                    <p:column style="width:53px !important; padding-left: 0px; text-align: center;" headerText="SZÍN" >
-                      <p:colorPicker value="#{player.color}" class="ui-colorpicker"> 
-                      </p:colorPicker>                  
+                    <p:column style="max-width:53px !important; padding-left: 5px; text-align: center;" headerText="SZÍN" >
+                      <div style="width: 100%;">
+                        <p:colorPicker value="#{player.color}" class="ui-colorpicker"> 
+                        </p:colorPicker>                  
+                      </div>
                     </p:column>
                     <p:column style="width:70%; text-align: center;padding:0px !important;" headerText="NÉV">
                       <div style="vertical-align: middle !important; height: 100%; width: 90%;margin:0px !important;">
@@ -379,7 +381,7 @@
                 <td>
                   <div style="min-height: 340px;position: relative;">
                     <p class="center" style="max-width: 500px;">
-                      <h:outputText id="ot_question" class="question" value="#{gameManager.getLastQuestionText()}"/>
+                      <h:outputText id="ot_question" value="#{gameManager.getLastQuestionText()}" class="#{gameManager.getLastQuestionClass()}"/>
                       <br/><br/>
                       <h:panelGroup id="pg_explanation" rendered="#{gameManager.getLastQuestionExplanation().length() gt 0}">
                       <h:outputText id="ot_explanation" class="explanation" value="#{gameManager.getLastQuestionExplanation()}"/>
