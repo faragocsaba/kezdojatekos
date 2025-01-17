@@ -140,7 +140,14 @@ public class QuestionManager implements Serializable {
               q.setIndiscreet(values[4].trim().equals("1"));
 
               try {
-                int categoryId = Integer.parseInt(values[5].trim());
+                q.setWeight(Integer.parseInt(values[5].trim()));
+              }
+              catch (NumberFormatException e) {
+                throw new IllegalArgumentException("A megadott súly érták nem szám.");
+              }              
+
+              try {
+                int categoryId = Integer.parseInt(values[6].trim());
                 if ( categoryMap.get(categoryId) != null )
                   q.setCategory( categoryMap.get(categoryId) );
                 else
@@ -148,13 +155,6 @@ public class QuestionManager implements Serializable {
               }
               catch (NumberFormatException e) {
                 throw new IllegalArgumentException("A megadott kategória azonosító nem szám.");
-              }              
-              
-              try {
-                q.setWeight(Integer.parseInt(values[6].trim()));
-              }
-              catch (NumberFormatException e) {
-                throw new IllegalArgumentException("A megadott súly érták nem szám.");
               }              
               
               questions.add(q);
