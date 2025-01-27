@@ -409,6 +409,8 @@
                       <p:commandButton id="btn_newq1" class="material-symbols-outlined gamebutton" value="question_exchange" 
                                        action="#{gameManager.newQuestion()}"
                                        update="pg_full"
+                                       process="@this"
+                                       onstart="animateLettersDisappear();  setTimeout(() => PrimeFaces.ab({source: 'pageform:btn_newq2', update: 'pageform:pg_full'}), 1500); return false;"
                                        style="width:80px;padding: 5px;font-size: 50px;border: 1px solid black !important;
                                                justify-content: center; align-items: center; text-align: center !important; 
                                                display: inline-flex; top: 5px">
