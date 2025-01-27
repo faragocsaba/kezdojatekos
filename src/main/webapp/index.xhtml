@@ -18,6 +18,7 @@
     <link rel="icon" type="image/png" href="favicon.png" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,200&amp;icon_names=question_exchange" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
    
     <style>               
       .bgimage{
@@ -382,6 +383,9 @@
                   <div style="min-height: 340px;position: relative;">
                     <p class="center" style="max-width: 500px;">
                       <h:outputText id="ot_question" value="#{gameManager.getLastQuestionText()}" class="#{gameManager.getLastQuestionClass()}"/>
+
+                      <script>splitQuestionToLetters();</script>
+                      
                       <br/><br/>
                       <h:panelGroup id="pg_explanation" rendered="#{gameManager.getLastQuestionExplanation().length() gt 0}">
                       <h:outputText id="ot_explanation" class="explanation" value="#{gameManager.getLastQuestionExplanation()}"/>
@@ -425,6 +429,8 @@
                       <p:commandButton id="btn_newq2" class="gamebutton" 
                                        action="#{gameManager.newQuestion()}"
                                        update="pg_full"
+                                       process="@this"
+                                       onstart="animateLettersDisappear();  setTimeout(() => PrimeFaces.ab({source: 'pageform:btn_newq2', update: 'pageform:pg_full'}), 1500); return false;"
                                        style="width:175px; padding: 5px;max-width: 200px;
                                               text-align: left; padding-left: 50px; padding-top: 0px;
                                               background-image: url(#{resource['images/newquestion-icon3.png']});font-size: 22px;" value="&nbsp;&nbsp;&nbsp;&nbsp;ÚJ KÉRDÉS">

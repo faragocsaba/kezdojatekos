@@ -277,28 +277,63 @@ table, th, td {
   color: black;
 }
 
+.ml10 {
+  position: relative;
+  font-weight: 900;
+  font-size: 24px;
+}
+
+.ml10 .text-wrapper {
+  position: relative;
+  display: inline-block;
+  padding-top: 0.2em;
+  padding-right: 0.05em;
+  padding-bottom: 0.1em;
+  overflow: hidden;
+}
+
 .questiontext {
   font-family: 'Itim', cursive;
   font-size: 24px;	
   font-weight: bold;
-  color: black;
+  color: transparent;
   text-align: center;
+  visibility: hidden;
 }
 
 .questiontextmedium {
   font-family: 'Itim', cursive;
   font-size: 22px;	
   font-weight: bold;
-  color: black;
+  color: transparent;
   text-align: center;
+  visibility: hidden;
 }
 
 .questiontextsmall {
   font-family: 'Itim', cursive;
   font-size: 20px;	
   font-weight: bold;
-  color: black;
+  color: transparent;
   text-align: center;
+  visibility: hidden;
+}
+
+.question-word {
+  margin-right: 5px; /* Példa: szavak közötti távolság */
+  white-space : nowrap;
+  visibility: hidden;
+  color: transparent;
+}
+
+.question-letter {
+  color: black; /* Példa: betűk színezése */
+  font-weight: bold;
+  display: inline-block;
+  line-height: 1em;
+  transform-origin: 0 0;
+  visibility: hidden;
+  /*visibility: visible;*/
 }
 
 .explanation {
@@ -307,6 +342,7 @@ table, th, td {
   font-weight: bold;
   color: black;
   text-align: center;
+  visibility: hidden;
 }
 
 .settingstext {
