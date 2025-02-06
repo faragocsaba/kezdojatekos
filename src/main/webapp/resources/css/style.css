@@ -98,7 +98,7 @@ table, th, td {
   font-weight: bold;
   border: 1px solid black;
   border-radius: 2px;
-  color: black;
+  color: #23282e;
   background: #ffffff linear-gradient(to bottom, rgba(255,255,255,0.8) 0%,rgba(255,255,255,0) 30%);
   outline: 0;
   text-align: center;
@@ -123,13 +123,14 @@ table, th, td {
   flex: 1;
   min-width: 30px;
   max-width: 40px;
+  max-height: 7vh;
   padding: 5px;
   text-align: center;
   border: none;
   border-radius: 0px;
   background: transparent;
   cursor: pointer;
-  color: black;
+  color: #23282e;
   font-family: 'Itim', cursive;
   font-size: 28px;	
   box-shadow: none;
@@ -138,12 +139,12 @@ table, th, td {
 .menubutton:hover {
   transform: scale(1.1);
   color: rgba(0, 0, 0, 0.8);
-  border: 1px black;
+  border: 1px #23282e;
   box-shadow: 1px white;
 }  
 
 .menubutton:active {
-  color: rgba(0, 0, 0, 0.2);
+  transform: scale(0.95);
 }
 
 .menubutton:disabled {
@@ -152,21 +153,35 @@ table, th, td {
   color: transparent;
 }  
 
+.ui-widget-content {
+  border: none !important;
+}
+
+.ui-state-default {
+  -moz-box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;  
+}
+
 .gamebutton {
   flex: 1;
   min-width: 80px;
   max-width: 90px;
-  height: 60px;
   padding: 5px;
   text-align: center;
-  border: 1px solid black;
+
+/*  border: 1px solid black;
   border-radius: 1px;
-  background: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.4);*/
+
+  border: none;
+  background: transparent;
+
   cursor: pointer;
-  color: black;
+  color: #23282e;
   font-family: 'Itim', cursive;
   font-size: 50px;	
-  box-shadow: #b0b0b0;
+  /*box-shadow: #b0b0b0;*/
   opacity: 0.9;
   user-select: none;
   -webkit-user-select: none; /* Safari */
@@ -175,14 +190,14 @@ table, th, td {
 }
 
 .gamebutton:hover {
-  color: rgba(0, 0, 0, 0.8);
-  border: 1px black;
-  box-shadow: 1px white;
-  transform: scale(1.05);
+/*  color: rgba(0, 0, 0, 0.8);
+  border: 1px #23282e;
+  box-shadow: 1px white;*/
+  transform: scale(1.1);
 }  
 
 .gamebutton:active {
-  background: rgba(0, 0, 0, 0.2);
+  transform: scale(0.95);
 }
 
 .addplayerbutton {
@@ -194,7 +209,7 @@ table, th, td {
   border-radius: 0px;
   background: transparent !important;
   cursor: pointer;
-  color: black;
+  color: #23282e;
   font-family: 'Itim', cursive;
   font-size: 28px;	
   box-shadow: none !important;
@@ -211,7 +226,7 @@ table, th, td {
 
 .addplayerbutton:hover {
   color: rgba(0, 0, 0, 0.8);
-  border: 1px black !important;
+  border: 1px #23282e !important;
   box-shadow: none !important;
   transform: scale(1.05);
 }  
@@ -229,7 +244,7 @@ table, th, td {
   border-radius: 0px;
   background: transparent !important;
   cursor: pointer;
-  color: black;
+  color: #23282e;
   font-family: 'Itim', cursive;
   font-size: 28px;	
   box-shadow: none;
@@ -245,7 +260,7 @@ table, th, td {
 
 .delplayerbutton:hover {
   color: rgba(0, 0, 0, 0.8);
-  border: 1px black !important;
+  border: 1px #23282e !important;
   box-shadow: none !important;
   transform: scale(1.05);
 }  
@@ -270,11 +285,22 @@ table, th, td {
   padding: 5px 3px 1px 3px !important;
 }
 
+.pointstext{
+  font-size: 20px !important;	
+}
+
 .starttext {
   font-family: 'Itim', cursive;
-  font-size: 24px;	
+  font-size: calc(3vh + 4px);	
   font-weight: bold;
-  color: black;
+  color: #23282e;
+}
+
+.sidebartitletext {
+  font-family: 'Itim', cursive;
+  font-size: calc(1vh + 14px);	
+  font-weight: bold;
+  color: #23282e;
 }
 
 .ml10 {
@@ -294,7 +320,7 @@ table, th, td {
 
 .questiontext {
   font-family: 'Itim', cursive;
-  font-size: 24px;	
+  font-size: calc(3vh + 6px);	
   font-weight: bold;
   color: transparent;
   text-align: center;
@@ -303,7 +329,7 @@ table, th, td {
 
 .questiontextmedium {
   font-family: 'Itim', cursive;
-  font-size: 22px;	
+  font-size: calc(3vh + 4px);	
   font-weight: bold;
   color: transparent;
   text-align: center;
@@ -312,7 +338,7 @@ table, th, td {
 
 .questiontextsmall {
   font-family: 'Itim', cursive;
-  font-size: 20px;	
+  font-size: calc(3vh + 2px);	
   font-weight: bold;
   color: transparent;
   text-align: center;
@@ -327,7 +353,7 @@ table, th, td {
 }
 
 .question-letter {
-  color: black; /* Példa: betűk színezése */
+  color: #23282e;
   font-weight: bold;
   display: inline-block;
   line-height: 1em;
@@ -338,9 +364,27 @@ table, th, td {
 
 .explanation {
   font-family: 'Itim', cursive;
-  font-size: 15px;	
+  font-size: calc(2vh + 6px);	
   font-weight: bold;
-  color: black;
+  color: #23282e;
+  text-align: center;
+  visibility: hidden;
+}
+
+.explanationmedium {
+  font-family: 'Itim', cursive;
+  font-size: calc(2vh + 4px);	
+  font-weight: bold;
+  color: #23282e;
+  text-align: center;
+  visibility: hidden;
+}
+
+.explanationsmall {
+  font-family: 'Itim', cursive;
+  font-size: calc(2vh + 2px);	
+  font-weight: bold;
+  color: #23282e;
   text-align: center;
   visibility: hidden;
 }
@@ -349,7 +393,7 @@ table, th, td {
   font-family: 'Itim', cursive;
   font-size: 18px;	
   font-weight: bold;
-  color: black;
+  color: #23282e;
   text-align: left;
 }
 
@@ -455,6 +499,18 @@ table, th, td {
   width: auto; /* Ez az oszlop rugalmas lesz */
 }
 
+.ui-datatable tbody tr.deciderrow {
+  border-top: 12px solid #e4d3b5 !important;
+}
+
+.ui-datatable-odd tbody tr.deciderrow {
+  border-top: 12px solid #e4d3b5 !important;
+}
+
+.ui-datatable-even tbody tr.deciderrow {
+  border-top: 12px solid #e4d3b5 !important;
+}
+
 .simpleheadertable {
   border: none !important; /* Cellák alatti határok eltávolítása */
   background: transparent !important;
@@ -470,6 +526,16 @@ table, th, td {
 
 .simpleheadertable tbody tr:first-child {
   border-top: 12px solid #D8DCDD;
+}
+
+.simpleheadertable .ui-datatable-odd {
+  border-color: #e4d3b5 !important;
+  background: #f8f0e3 !important;
+}
+
+.simpleheadertable .ui-datatable-even {
+  border-color: #e4d3b5 !important;
+  background: transparent !important;
 }
 
 .player-box {
@@ -537,6 +603,7 @@ table, th, td {
   height: 30px; 
   width: 30px; 
   box-shadow: 1px 1px 0 grey;
+  font-size: 24px !important;
 }  
 
 .playercheckbox:hover{
@@ -641,28 +708,12 @@ table, th, td {
   font-size: 16px;  /* Betűméret módosítása */
 }
 
-.ui-datatable thead th {
-  padding: 5px !important;
-}
-
 .ui-datatable tbody td.questioncol {
   padding: 2px !important;
   padding-bottom: 5px !important;
   vertical-align: middle !important;
   height: 100%;
   display: table-cell !important;
-}
-
-.ui-datatable tbody tr.deciderrow {
-  border-top: 12px solid #D8DCDD;
-}
-
-.ui-datatable-odd tbody tr.deciderrow {
-  border-top: 12px solid #D8DCDD;
-}
-
-.ui-datatable-even tbody tr.deciderrow {
-  border-top: 12px solid #D8DCDD;
 }
 
 .ui-toggleswitch{
@@ -673,7 +724,7 @@ table, th, td {
 .ui-toggleswitch-slider {
   -webkit-transition: background-color 0.3s, box-shadow 0.2s;
   transition: background-color 0.3s, box-shadow 0.2s;
-  background: #cccccc;
+  background: #a89576;
 }
 
 .ui-toggleswitch-slider:before {
@@ -699,7 +750,7 @@ table, th, td {
 }
 
 .ui-toggleswitch.ui-toggleswitch-checked .ui-toggleswitch-slider {
-  background-color: #3F51B5;
+  background-color: #8e6521;
 }
 
 .ui-toggleswitch.ui-toggleswitch-checked:not(.ui-state-disabled):hover .ui-toggleswitch-slider {
@@ -714,7 +765,7 @@ table, th, td {
   max-width: 800px; /* ...de legfeljebb ennyi pixel */
   height: 90vh; /* A magasság is 90% */
   max-height: 90vh;
-  background-color: #d8dcdd;
+  background-color: #e4d3b5;
   overflow: hidden !important;
 }
 
@@ -761,12 +812,12 @@ table, th, td {
 
 .ui-datatable thead th {
     font-family: 'Itim', cursive;
-    background-color: #d8dcdd !important; /* Háttérszín */
+    background-color: transparent !important; /* Háttérszín */
     color: black; /* Szövegszín */
     font-weight: bold; /* Félkövér szöveg */
     font-size: 18px;
     text-align: left; /* Középre igazított szöveg */
-    padding: 2px;
+    padding: 5px;
     border-bottom: 2px solid #388E3C; /* Alsó szegély */
 }
 
@@ -780,7 +831,7 @@ table, th, td {
 /*  position: absolute;
   left: 38% !important;
   top: 250px !important;*/
-  background-color: #d8dcdd;
+  background-color: #e4d3b5;
   font-family: 'Itim', cursive;
   text-transform: uppercase;
   border: 2px solid;
@@ -792,7 +843,7 @@ table, th, td {
 /* Fejléc */
 
 div.ui-dialog-titlebar.ui-widget-header.ui-helper-clearfix.ui-corner-top {
-  background-color: #d8dcdd;
+  background-color: #e4d3b5 !important;
 }
 
 /* "Megerősítés" szöveg */
@@ -806,7 +857,7 @@ span.ui-dialog-title{
 
 /* x a sarokban */
 .ui-dialog-titlebar-icon.ui-dialog-titlebar-close.ui-corner-all{
-  background-color: #d8dcdd;
+  background-color: #e4d3b5;
   color: black;
 }
 
@@ -831,7 +882,7 @@ span.ui-confirm-dialog-message {
 
 /* gombok befoglalója */
 .ui-dialog-buttonpane.ui-dialog-footer.ui-widget-content.ui-helper-clearfix{
-  background-color: #d8dcdd;
+  background-color: #e4d3b5;
   color: black;
   text-align: center;
   left: 0;
@@ -848,9 +899,9 @@ span.ui-confirm-dialog-message {
   height: 60px;
   padding: 5px;
   text-align: center;
-  border: 1px solid black;
+  border: transparent;
   border-radius: 1px;
-  background: rgba(255, 255, 255, 0.4);
+  background: transparent;
   cursor: pointer;
   color: black;
   font-family: 'Itim', cursive;
@@ -860,14 +911,11 @@ span.ui-confirm-dialog-message {
 }
 
 .ui-button.ui-widget.ui-state-default.ui-corner-all.ui-button-text-only.ui-confirmdialog-yes:hover {
-  color: rgba(0, 0, 0, 0.8);
-  border: 1px black;
-  box-shadow: 1px white;
-  transform: scale(1.05);
+  transform: scale(1.1);
 }
 
 .ui-button.ui-widget.ui-state-default.ui-corner-all.ui-button-text-only.ui-confirmdialog-yes:active {
-  background: rgba(0, 0, 0, 0.2);
+  transform: scale(0.95);
 }
 
 /* "Nem" gomb */
@@ -878,9 +926,9 @@ span.ui-confirm-dialog-message {
   height: 60px;
   padding: 5px;
   text-align: center;
-  border: 1px solid black;
+  border: transparent;
   border-radius: 1px;
-  background: rgba(255, 255, 255, 0.4);
+  background: transparent;
   cursor: pointer;
   color: black;
   font-family: 'Itim', cursive;
@@ -891,14 +939,11 @@ span.ui-confirm-dialog-message {
 }
 
 .ui-button.ui-widget.ui-state-default.ui-corner-all.ui-button-text-only.ui-confirmdialog-no:hover {
-  color: rgba(0, 0, 0, 0.8);
-  border: 1px black;
-  box-shadow: 1px white;
-  transform: scale(1.05);
+  transform: scale(1.1);
 }
 
 .ui-button.ui-widget.ui-state-default.ui-corner-all.ui-button-text-only.ui-confirmdialog-no:active {
-  background: rgba(0, 0, 0, 0.2);
+  transform: scale(0.95);
 }
 
 @media (pointer: none) {
@@ -919,3 +964,14 @@ span.ui-confirm-dialog-message {
   }
 }
 
+@media (max-aspect-ratio: 5/8) {
+  .high-ratio {
+    display: none;
+  }
+}
+
+@media (min-aspect-ratio: 5/8) {
+  .low-ratio {
+    display: none;
+  }
+}

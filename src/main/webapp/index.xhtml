@@ -44,7 +44,9 @@
                                         background-position: top;
                                         background-size: cover;     
                                         min-height: 100vh;
-                                        transition: background-image 1s ease-in-out;">
+                                        transition: background-image 1s ease-in-out;
+                                        display: flex;
+                                        align-items: stretch;">
 
         <p:dialog header="NÉVJEGY" widgetVar="dlg_about"
                   resizable="false" closable="true" draggable="false" showEffect="fade" hideEffect="fade"
@@ -79,9 +81,9 @@
           </p>
         </p:dialog>      
 
-        <p:sidebar widgetVar="sidebar_players" position="left" blockScroll="true" style="height:100vh; background-color: #d8dcdd; opacity: 1; max-width:80%; width: 600px;padding:4px;"
+        <p:sidebar widgetVar="sidebar_players" position="left" blockScroll="true" style="height:100vh; background-color: #e4d3b5; opacity: 1; max-width:80%; width: 600px;padding:4px;"
                    rendered="#{gameManager.getQuestionIndex() == 0 and gameManager.adminPage == false}">
-          <div class="starttext" align="center" style="padding: 10px 3px 3px 3px;max-width:97%;">
+          <div class="sidebartitletext" align="center" style="padding: 10px 3px 3px 3px;max-width:97%;">
             JÁTÉKOSOK
           </div>
           <h:panelGroup id="pg_players" class="div-sidebar starttext" layout="block" style="width:calc(100% - 10px);max-height: 92vh;padding: 5px; padding-top: 0px;">
@@ -189,8 +191,8 @@
           </h:panelGroup>
         </p:sidebar>
 
-        <p:sidebar widgetVar="sidebar_result" position="left" blockScroll="true" style="height:100vh; background-color: #d8dcdd; opacity: 1; max-width:80%; width: 600px;padding:4px;">
-          <div class="starttext" align="center" style="padding: 10px 3px 3px 3px;max-width:97%;padding-bottom: 10px;">
+        <p:sidebar widgetVar="sidebar_result" position="left" blockScroll="true" style="height:100vh; background-color: #e4d3b5; opacity: 1; max-width:80%; width: 600px;padding:4px;">
+          <div class="sidebartitletext" align="center" style="padding: 10px 3px 3px 3px;max-width:97%;padding-bottom: 10px;">
             VÁLASZ
           </div>
           <h:panelGroup id="pg_players2" class="div-sidebar starttext" layout="block" style="width:calc(100% - 10px);max-height: 92vh;padding: 5px; padding-top: 0px;"
@@ -214,7 +216,7 @@
                     
                     <p:column style="width:70px; text-align: center;" headerText="PONT">
                       <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                        <p:outputLabel id="ol_points" style="left:10px;" value="#{gameManager.getPlayerPointsText(player)}"/>
+                        <p:outputLabel id="ol_points" class="pointstext" style="left:10px;" value="#{gameManager.getPlayerPointsText(player)}"/>
                       </div>
                     </p:column>
                   </p:dataTable>
@@ -232,8 +234,8 @@
           </h:panelGroup>
         </p:sidebar>
         
-        <p:sidebar widgetVar="sidebar_questions" position="right" blockScroll="true" style="height:100vh; background-color: #d8dcdd; opacity: 1; max-width:80%; width: 700px;padding:4px;">
-          <div class="starttext" align="center" style="padding: 10px 3px 3px 3px;max-width:97%;">
+        <p:sidebar widgetVar="sidebar_questions" position="right" blockScroll="true" style="height:100vh; background-color: #e4d3b5; opacity: 1; max-width:80%; width: 700px;padding:4px;">
+          <div class="sidebartitletext" align="center" style="padding: 10px 3px 3px 3px;max-width:97%;">
             KORÁBBI KÉRDÉSEK
           </div>
           <div class="div-sidebar starttext" align="left" style="padding: 3px;max-width:100%;max-height: 90vh;margin-top: 10px;">
@@ -263,7 +265,7 @@
           </div>
         </p:sidebar>
 
-        <p:sidebar widgetVar="sidebar_settings" position="top" blockScroll="true" style="height:145px; background-color: #d8dcdd; opacity: 1;">
+        <p:sidebar widgetVar="sidebar_settings" position="top" blockScroll="true" style="height:145px; background-color: #e4d3b5; opacity: 1;">
           <div align="center" style="width:400px;">
             <p:toggleSwitch id="ts_noequivocal" style="position: absolute; top: 35px; left:30px;" value="#{gameManager.noEquivocal}"/>
             <div style="position: absolute; top: 22px; left:100px;height:55px;  width: 70%;">
@@ -281,13 +283,12 @@
                          action="#{gameManager.setAdminPage(true)}">
           <f:ajax render="pg_full"/>
         </h:commandButton>
-        <h:panelGroup id="pg_welcome" rendered="#{gameManager.getQuestionIndex() == 0 and gameManager.adminPage == false}">
+        <h:panelGroup id="pg_welcome" style="flex-grow: 1;" rendered="#{gameManager.getQuestionIndex() == 0 and gameManager.adminPage == false}">
           <p align="center"  class="fullpg">
-
-            <table id="tblStart" align="center" class="starttext" style="width:96%; height: 100%; max-width: 940px; line-height: 1.5; margin: auto;">
-              <tr>
+            <table id="tblStart" align="center" style="width:96%; height: 100%; max-width: 75vh; line-height: 1.5; margin: auto;">
+              <tr style="height: 6%;">
                 <td style="text-align: center; padding: 5px; ">  
-                  <div style="height: 35px; display: flex; justify-content: space-around; max-width: 500px;margin: auto;padding-bottom: 6px; border-bottom: 0px solid black;">
+                  <div style="display: flex; justify-content: space-around; max-width: 500px;margin: auto;padding-bottom: 6px; border-bottom: 0px solid black;">
                     <p:commandButton id="btn_wmenu1" class="menubutton fas fa-cog" value="" onclick="PF('sidebar_settings').show()"></p:commandButton>
                     <p:commandButton id="btn_wmenu2" class="menubutton fas fa-users-cog" value="" 
                                      disabled="false" onclick="PF('sidebar_players').show()"></p:commandButton>
@@ -300,15 +301,12 @@
                   </div>
                 </td>
               </tr>
-              <tr>
-                <td>
-                  <div style="height: 25px;position: relative;"></div>
-                </td>
+              <tr style="height: 3%;">
               </tr>
-              <tr>
+              <tr style="height: 46%;">
                 <td>
-                  <div style="min-height: 340px;position: relative;">
-                    <p class="center" style="max-width: 500px;">
+                  <div style="position: relative;height: 100%;">
+                    <p class="starttext center" style="max-width: 500px;">
                       KI KEZDJE A JÁTÉKOT?<br/><br/>
                       DÖNTSÉTEK EL <br/>
                       EGY ÉRDEKES KÉRDÉSSEL!<br/><br/><br/>
@@ -316,39 +314,45 @@
                   </div>
                 </td>
               </tr>  
-              <tr style="line-height: 60px;margin: auto;display: inline-block">
-                <td align="center">
-                  <div style="max-width: 500px;margin: auto;">
-                    <div class="pointer-none">
+              <tr style="height: 13%;">
+                <td align="center" style="height:100%;">
+                  <div style="max-width: 500px;margin: auto; height:100%;">
+                    <div class="low-ratio">
                       <p:commandButton id="btn_start1" class="gamebutton fas fa-play-circle" 
                                        action="#{gameManager.newQuestion()}"
                                        update="pg_full"
-                                       style="width:50px;padding: 5px;padding-top:4px;" value="">
+                                       style="width:50px;padding: 5px;padding-top:4px;max-height:13vh;" value="">
                       </p:commandButton>
                     </div>
                     
-                    <div class="pointer-fine">
-                      <p:commandButton id="btn_start2" class="gamebutton" 
-                                       action="#{gameManager.newQuestion()}"
-                                       update="pg_full"
-                                       style="width:175px; padding: 5px;max-width: 200px;
-                                              text-align: left; padding-left: 48px; padding-top: 0px;
-                                              background-image: url(#{resource['images/start-icon3.png']});font-size: 22px;" value="JÖHET&nbsp;A&#x2028;&nbsp;KÉRDÉS">
-                      </p:commandButton>
+                    <div class="high-ratio" style="height:100%;">
+                      <div style="max-width: 550px;margin: auto;display: inline-block;height:100%;">
+                        <p:commandButton id="btn_start2" class="gamebutton" 
+                                         action="#{gameManager.newQuestion()}"
+                                         update="pg_full"
+                                         style="width:175px; padding: 5px; max-width: 22vh; max-height:12vh;
+                                                text-align: left; padding-left: calc(3vh + 12px); padding-top: 3px;
+                                                background-size: contain; background-repeat: no-repeat; background-position: left center;
+                                                background-image: url(#{resource['images/start-icon.png']});
+                                                font-size: 3vh;" value="JÖHET&nbsp;A&#x2028;&nbsp;KÉRDÉS">
+                        </p:commandButton>
+                      </div>
                     </div>
                   </div>
                 </td>
+              </tr>  
+              <tr style="height: 32%">
               </tr>  
             </table>    
           </p>    
         </h:panelGroup>
 
-        <h:panelGroup id="pg_game" rendered="#{gameManager.getQuestionIndex() gt 0 and gameManager.adminPage == false}">
+        <h:panelGroup id="pg_game" style="flex-grow: 1;" rendered="#{gameManager.getQuestionIndex() gt 0 and gameManager.adminPage == false}">
           <p align="center">
-            <table id="tblStart" align="center" class="starttext" style="width:96%; height: 100%; max-width: 1040px; line-height: 1.5; margin: auto;">
-              <tr>
+            <table id="tblStart" align="center" class="starttext" style="width:96%; height: 100%; max-width: 75vh; line-height: 1.5; margin: auto;">
+              <tr style="height: 6%;">
                 <td style="text-align: center; padding: 5px; ">  
-                  <div style="height: 35px; display: flex; justify-content: space-around; max-width: 500px;margin: auto;padding-bottom: 6px; border-bottom: 0px solid black;">
+                  <div style="display: flex; justify-content: space-around; max-width: 500px;margin: auto;padding-bottom: 6px; border-bottom: 0px solid black;">
                     <p:commandButton id="btn_menu1" class="menubutton fas fa-cog" value="" onclick="PF('sidebar_settings').show()"></p:commandButton>
                     <p:commandButton id="btn_menu2" class="menubutton fas fa-user-check" value="" 
                                      disabled="#{gameManager.currentPlayers.size() eq 0}" onclick="PF('sidebar_result').show()"></p:commandButton>
@@ -373,34 +377,34 @@
                   </div>
                 </td>
               </tr>
-              <tr>
-                <td>
-                  <div style="height: 25px;position: relative;"></div>
-                </td>
+              <tr style="height: 3%;">
               </tr>
-              <tr>
+              <tr style="height: 46%;">
                 <td>
-                  <div style="min-height: 340px;position: relative;">
+                  <div style="height: 100%;position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center;">
                     <p class="center" style="max-width: 500px;">
+                      <div style="line-height: 5vh; max-width: 85%;">
                       <h:outputText id="ot_question" value="#{gameManager.getLastQuestionText()}" class="#{gameManager.getLastQuestionClass()}"/>
 
                       <script>splitQuestionToLetters();</script>
                       
-                      <br/><br/>
-                      <h:panelGroup id="pg_explanation" rendered="#{gameManager.getLastQuestionExplanation().length() gt 0}">
-                      <h:outputText id="ot_explanation" class="explanation" value="#{gameManager.getLastQuestionExplanation()}"/>
-                      <br/><br/>
-                      </h:panelGroup>
+                      </div>
+                      <h:panelGroup id="pg_explanation" style="display: flex; justify-content: center;" 
+                                    rendered="#{gameManager.getLastQuestionExplanation().length() gt 0}">
+                      <div style="line-height: 4vh; max-width: 85%;">
                       <br/>
+                      <h:outputText id="ot_explanation" class="#{gameManager.getLastQuestionExplanationClass()}" value="#{gameManager.getLastQuestionExplanation()}"/>
+                      </div>
+                      </h:panelGroup>
                     </p>
                   </div>
                 </td>
               </tr>  
-              <tr style="line-height: 60px">
-                <td align="center">
-                  <div class="pointer-none">
-                    <div style="max-width: 550px;margin: auto;display: inline-block">
-                      <p:commandButton id="btn_hands1" class="gamebutton far fa-handshake" style="width:50px;padding: 5px;margin-right: 30px;" value="" 
+              <tr style="height: 13%">
+                <td align="center" style="height:100%;">
+                  <div class="low-ratio" style="height:100%;">
+                    <div style="max-width: 550px;margin: auto;display: inline-block; height:100%;">
+                      <p:commandButton id="btn_hands1" class="gamebutton far fa-handshake" style="width:50px;padding: 5px;margin-right: 30px; max-height:13vh;" value="" 
                                        action="#{gameManager.setQuestionIndex(0)}" 
                                        update="pg_full">
                         <p:confirm header="Megerősítés" message="Lezárod ezt a fordulót és visszatérsz a kezdőoldalra?"/>
@@ -411,20 +415,21 @@
                                        update="pg_full"
                                        process="@this"
                                        onstart="animateLettersDisappear();  setTimeout(() => PrimeFaces.ab({source: 'pageform:btn_newq2', update: 'pageform:pg_full'}), 1500); return false;"
-                                       style="width:80px;padding: 5px;font-size: 50px;border: 1px solid black !important;
+                                       style="width:80px;padding: 5px;font-size: 50px;border: transparent !important;
                                                justify-content: center; align-items: center; text-align: center !important; 
-                                               display: inline-flex; top: 5px">
+                                               display: inline-flex; top: 5px;max-height:13vh;">
                       </p:commandButton>       
                     </div>
                   </div>
-                  <div class="pointer-fine">
-                    <div style="max-width: 550px;margin: auto;display: inline-block">
+                  <div class="high-ratio" style="height:100%;">
+                    <div style="max-width: 550px;margin: auto;display: inline-block; height:100%;">
                       <p:commandButton id="btn_hands2" class="gamebutton" 
                                        action="#{gameManager.setQuestionIndex(0)}" 
                                        update="pg_full"
-                                       style="width:190px; padding: 5px;max-width: 200px;
-                                              text-align: left; padding-left: 57px; padding-top: 0px; margin-right: 30px;
-                                              background-image: url(#{resource['images/handshake-icon3.png']});font-size: 22px;" value="MEGVAN&#x2028;A&nbsp;KEZDŐ">
+                                       style="width:190px; padding: 5px;max-width: 25vh; max-height:12vh;
+                                              text-align: left; padding-left: min(5vh + 12px, 85px); padding-top: 0px; margin-right: 5vh;
+                                              background-size: contain; background-repeat: no-repeat; background-position: left center;
+                                              background-image: url(#{resource['images/handshake-icon.png']});font-size: 3vh;" value="MEGVAN&#x2028;A&nbsp;KEZDŐ">
                         <p:confirm header="Megerősítés" message="Lezárod ezt a fordulót és visszatérsz a kezdőoldalra?"/>
                       </p:commandButton>
 
@@ -433,13 +438,16 @@
                                        update="pg_full"
                                        process="@this"
                                        onstart="animateLettersDisappear();  setTimeout(() => PrimeFaces.ab({source: 'pageform:btn_newq2', update: 'pageform:pg_full'}), 1500); return false;"
-                                       style="width:175px; padding: 5px;max-width: 200px;
-                                              text-align: left; padding-left: 50px; padding-top: 0px;
-                                              background-image: url(#{resource['images/newquestion-icon3.png']});font-size: 22px;" value="&nbsp;&nbsp;&nbsp;&nbsp;ÚJ KÉRDÉS">
+                                       style="width:175px; padding: 5px;max-width: 22vh; max-height:12vh;
+                                              text-align: left; padding-left: min(4vh + 8px, 70px); padding-top: 0px;
+                                              background-size: contain; background-repeat: no-repeat; background-position: left center;
+                                              background-image: url(#{resource['images/newquestion-icon.png']});font-size: 3vh;" value="&nbsp;&nbsp;&nbsp;&nbsp;ÚJ KÉRDÉS">
                       </p:commandButton>
                     </div>
                   </div>
                 </td>
+              </tr>  
+              <tr style="height: 32%">
               </tr>  
             </table>    
           </p>    

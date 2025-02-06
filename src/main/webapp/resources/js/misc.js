@@ -81,7 +81,15 @@ function animateLetters() {
       },
       complete: function() {
         // Az animáció végén az explanation elemet láthatóvá tesszük
-        const explanationElement = document.querySelector('.explanation');
+        explanationElement = document.querySelector('.explanation');
+        if (explanationElement) {
+          explanationElement.style.visibility = 'visible';
+        }
+        explanationElement = document.querySelector('.explanationmedium');
+        if (explanationElement) {
+          explanationElement.style.visibility = 'visible';
+        }
+        explanationElement = document.querySelector('.explanationsmall');
         if (explanationElement) {
           explanationElement.style.visibility = 'visible';
         }
@@ -95,7 +103,15 @@ function animateLetters() {
 
 function animateLettersDisappear() {
   
-  const explanationElement = document.querySelector('.explanation');
+  explanationElement = document.querySelector('.explanation');
+  if (explanationElement) {
+    explanationElement.style.visibility = 'hidden';
+  }
+  explanationElement = document.querySelector('.explanationmedium');
+  if (explanationElement) {
+    explanationElement.style.visibility = 'hidden';
+  }
+  explanationElement = document.querySelector('.explanationsmall');
   if (explanationElement) {
     explanationElement.style.visibility = 'hidden';
   }
@@ -106,7 +122,7 @@ function animateLettersDisappear() {
       opacity: [1, 0],  // Az elem fokozatosan eltűnik
       scale: [1, 0.5],  // Az elem összemegy, így jobban látható, hogy eltűnik
       duration: 500,  // Az animáció időtartama
-      delay: (el, i) => 25 * i,  // Késleltetés, hogy a betűk egymás után tűnjenek el
+      delay: (el, i) => 15 * i  // Késleltetés, hogy a betűk egymás után tűnjenek el
     });
     
 }

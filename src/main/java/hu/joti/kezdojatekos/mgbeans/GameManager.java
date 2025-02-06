@@ -283,6 +283,18 @@ public class GameManager implements Serializable {
     return explanation;
   }
 
+  public String getLastQuestionExplanationClass(){
+    if (lastQuestion != null){
+      int qlen = lastQuestion.getText().length();
+      int elen = lastQuestion.getExplanation().length();
+      if (elen > 70 && qlen > 50)
+        return "explanationsmall";
+      if (elen > 50 || qlen > 70)
+        return "explanationmedium";
+    }
+    return "explanation";
+  }
+
   public Question getLastQuestion() {
     return lastQuestion;
   }
