@@ -77,7 +77,9 @@ public class QuestionManager implements Serializable {
             newText = question.getText().substring(0, brStart) + item + question.getText().substring(brEnd + 1);
             LOGGER.debug("newText: " + newText);
             maxId++;
-            Question newQuestion = new Question(maxId, newText, question.getExplanation(), question.getWeight(), question.isActive(), question.isUnequivocal(), question.isIndiscreet(), question.getCategory());
+            Question newQuestion = new Question(maxId, newText, question.getExplanation(), question.getWeight(), 
+                                                question.isActive(), question.isUnequivocal(), question.isIndiscreet(),  question.isChildfriendly(),
+                                                question.getCategory());
             newQuestion.setDerived(true);
             newQuestions.add(newQuestion);
           }
@@ -138,16 +140,17 @@ public class QuestionManager implements Serializable {
               q.setActive(values[2].trim().equals("1"));
               q.setUnequivocal(values[3].trim().equals("1"));
               q.setIndiscreet(values[4].trim().equals("1"));
+              q.setChildfriendly(values[5].trim().equals("1"));
 
               try {
-                q.setWeight(Integer.parseInt(values[5].trim()));
+                q.setWeight(Integer.parseInt(values[6].trim()));
               }
               catch (NumberFormatException e) {
                 throw new IllegalArgumentException("A megadott súly érták nem szám.");
               }              
 
               try {
-                int categoryId = Integer.parseInt(values[6].trim());
+                int categoryId = Integer.parseInt(values[7].trim());
                 if ( categoryMap.get(categoryId) != null )
                   q.setCategory( categoryMap.get(categoryId) );
                 else
@@ -186,7 +189,9 @@ public class QuestionManager implements Serializable {
     int i = 0;
     for (Question q : questions) {
       i++;
-      LOGGER.debug(i + ". kérdés: " + q.getText() + ";" + q.getExplanation() + ";" + q.isActive() + q.isUnequivocal() + q.isIndiscreet() + ";" + q.getWeight() + ";" + q.getCategory().getId());
+      LOGGER.debug(i + ". kérdés: " + q.getText() + ";" + q.getExplanation() + ";" + q.isActive() 
+                                    + q.isUnequivocal() + q.isIndiscreet() + ";" + q.isChildfriendly()+ ";"
+                                    + q.getWeight() + ";" + q.getCategory().getId());
     }
     
     LOGGER.debug("Mentünk.");   
@@ -194,12 +199,12 @@ public class QuestionManager implements Serializable {
     LOGGER.debug("Mentés vége.");   
   }
           
-  public List<Question> getActiveQuestions(boolean noEquivocal, boolean addIndiscreet) {
+  public List<Question> getActiveQuestions(boolean noEquivocal, boolean addIndiscreet, boolean onlyChildfriendly) {
     List<Question> questions = new ArrayList<>(allQuestions);
     List<Question> inactQuestions = new ArrayList<>();
 
     for (Question question : questions) {
-      if (!question.isActive() || (noEquivocal && !question.isUnequivocal()) || (!addIndiscreet && question.isIndiscreet()))
+      if (!question.isActive() || (noEquivocal && !question.isUnequivocal()) || (!addIndiscreet && question.isIndiscreet()) || (onlyChildfriendly && !question.isChildfriendly()))
         inactQuestions.add(question);
     }
     
@@ -273,7 +278,7 @@ public class QuestionManager implements Serializable {
     try {
       response.setCharacterEncoding("UTF-8");
       writer = response.getWriter();
-      writer.println("KÉRDÉS" + CSV_DELIMITER + "KIEGÉSZÍTÉS" + CSV_DELIMITER + "AKTÍV" + CSV_DELIMITER + "ELLENŐRIZHETŐ" + CSV_DELIMITER + "KELLEMETLEN" + CSV_DELIMITER + "SÚLY" + CSV_DELIMITER + "KATEGÓRIA");
+      writer.println("KÉRDÉS" + CSV_DELIMITER + "KIEGÉSZÍTÉS" + CSV_DELIMITER + "AKTÍV" + CSV_DELIMITER + "ELLENŐRIZHETŐ" + CSV_DELIMITER + "KELLEMETLEN" + CSV_DELIMITER + "GYEREKBARÁT" + CSV_DELIMITER + "SÚLY" + CSV_DELIMITER + "KATEGÓRIA");
       for (Question q : allQuestions) {
         if (!q.isDerived()){
           boolean active = q.isActive() || q.isComposite();
@@ -282,6 +287,7 @@ public class QuestionManager implements Serializable {
                           (active ? "1" : "0") + CSV_DELIMITER +
                           (q.isUnequivocal() ? "1" : "0") + CSV_DELIMITER +
                           (q.isIndiscreet() ? "1" : "0") + CSV_DELIMITER +
+                          (q.isChildfriendly()? "1" : "0") + CSV_DELIMITER +
                           (q.getWeight()) + CSV_DELIMITER +
                           q.getCategory().getId() );
         }

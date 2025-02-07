@@ -117,11 +117,12 @@ public class QuestionDaoMysql implements QuestionDao, Serializable {
           boolean active = rs.getBoolean("is_active");
           boolean unequivocal = rs.getBoolean("is_unequivocal");
           boolean indiscreet = rs.getBoolean("is_indiscreet");
+          boolean childfriendly = rs.getBoolean("is_childfriendly");
           int category_id = rs.getInt("category_id");
           
           Category category = categories.get(category_id);
 
-          Question question = new Question(question_id, text, explanation, weight, active, unequivocal, indiscreet, category);
+          Question question = new Question(question_id, text, explanation, weight, active, unequivocal, indiscreet, childfriendly, category);
           questions.add(question);
         }  
       }
@@ -153,8 +154,6 @@ public class QuestionDaoMysql implements QuestionDao, Serializable {
 
     if (questions != null) {
       LOGGER.info("No. of questions in db: " + questions.size());
-      LOGGER.debug("Ez egy debug debug debug...");
-      LOGGER.trace("Ez egy trace trace trace...");
     }  
     return questions;
   }
@@ -175,7 +174,7 @@ public class QuestionDaoMysql implements QuestionDao, Serializable {
         pstmt.execute();
       }  
 
-      pstmt = conn.prepareStatement("insert into question (text, explanation, weight, is_active, is_unequivocal, is_indiscreet, category_id) values (?, ?, ?, ?, ?, ?, ?);");
+      pstmt = conn.prepareStatement("insert into question (text, explanation, weight, is_active, is_unequivocal, is_indiscreet, is_childfriendly, category_id) values (?, ?, ?, ?, ?, ?, ?, ?);");
 
       for (Question q : questions) {
         pstmt.setString(1, q.getText());
@@ -184,7 +183,8 @@ public class QuestionDaoMysql implements QuestionDao, Serializable {
         pstmt.setInt(4, q.isActive()? 1 : 0 );
         pstmt.setInt(5, q.isUnequivocal() ? 1 : 0 );
         pstmt.setInt(6, q.isIndiscreet() ? 1 : 0 );
-        pstmt.setInt(7, q.getCategory().getId());
+        pstmt.setInt(7, q.isChildfriendly()? 1 : 0 );
+        pstmt.setInt(8, q.getCategory().getId());
         pstmt.executeUpdate();
       }
 

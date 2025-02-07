@@ -39,6 +39,7 @@ public class GameManager implements Serializable {
   private int questionIndex; /* A recentQuestions hányadik eleme (1-től indul) */
   private boolean addIndiscreet = false;
   private boolean noEquivocal = false;
+  private boolean onlyChildfriendly = false;
   private boolean adminPage = false;
   private boolean canLoadFile = false;
   private boolean fullLoad = false;
@@ -111,7 +112,7 @@ public class GameManager implements Serializable {
 
       setWinnerPlayers(null);
       
-      List<Question> availQuestions = new ArrayList<>(questionManager.getActiveQuestions(noEquivocal, addIndiscreet));
+      List<Question> availQuestions = new ArrayList<>(questionManager.getActiveQuestions(noEquivocal, addIndiscreet, onlyChildfriendly));
       int allSize = availQuestions.size();
 
       for (Question question : recentQuestions) {
@@ -164,7 +165,9 @@ public class GameManager implements Serializable {
       if (recentQuestions.size() > (int)(QUESTION_REPEAT_RATE * allSize)){
         int qIndex = 0;
         do {
-          if (recentQuestions.get(qIndex).isUnequivocal() || !noEquivocal){
+          if ( (recentQuestions.get(qIndex).isUnequivocal() || !noEquivocal)
+            && (!recentQuestions.get(qIndex).isIndiscreet() || addIndiscreet)
+            && (recentQuestions.get(qIndex).isChildfriendly() || !onlyChildfriendly) )        {
             LOGGER.debug("Kérdés ismét jöhet: " + recentQuestions.get(qIndex).getText());
             recentQuestions.remove(qIndex);
             questionIndex--;
@@ -380,6 +383,14 @@ public class GameManager implements Serializable {
 
   public void setNoEquivocal(boolean noEquivocal) {
     this.noEquivocal = noEquivocal;
+  }
+
+  public boolean isOnlyChildfriendly() {
+    return onlyChildfriendly;
+  }
+
+  public void setOnlyChildfriendly(boolean onlyChildfriendly) {
+    this.onlyChildfriendly = onlyChildfriendly;
   }
 
   public boolean isAdminPage() {

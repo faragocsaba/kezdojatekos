@@ -15,6 +15,7 @@ public class Question implements Serializable, Cloneable {
   private boolean active;
   private boolean unequivocal;
   private boolean indiscreet;
+  private boolean childfriendly;
   private Category category;
   
   private List<Player> players;
@@ -26,7 +27,7 @@ public class Question implements Serializable, Cloneable {
 
   private static final Logger LOGGER = LogManager.getLogger(Question.class.getName());
 
-  public Question(int id, String text, String explanation, int weight, boolean active, boolean unequivocal, boolean indiscreet, Category category) {
+  public Question(int id, String text, String explanation, int weight, boolean active, boolean unequivocal, boolean indiscreet, boolean childfriendly, Category category) {
     this.id = id;
     this.text = text;
     this.explanation = explanation;
@@ -34,6 +35,7 @@ public class Question implements Serializable, Cloneable {
     this.active = active;
     this.unequivocal = unequivocal;
     this.indiscreet = indiscreet;
+    this.childfriendly = childfriendly;
     this.category = category;
   }
 
@@ -155,6 +157,14 @@ public class Question implements Serializable, Cloneable {
 
   public void setWinners(Set<Player> winners) {
     this.winners = winners;
+  }
+
+  public boolean isChildfriendly() {
+    return childfriendly;
+  }
+
+  public void setChildfriendly(boolean childfriendly) {
+    this.childfriendly = childfriendly;
   }
   
 }
