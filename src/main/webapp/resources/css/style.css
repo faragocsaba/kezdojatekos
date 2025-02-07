@@ -748,7 +748,7 @@ table, th, td {
 }
 
 .ui-toggleswitch.ui-toggleswitch-checked:not(.ui-state-disabled):hover .ui-toggleswitch-slider {
-  background-color: #283593;
+  background-color: #8e6521;
 }
 
 .ui-dialog {
