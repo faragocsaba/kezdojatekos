@@ -2,7 +2,7 @@
 
 body {
   margin: 0; 
-  height: 100%; 
+  height: calc(var(--vh, 1vh) * 100);
   overflow-y: hidden;
 }
 
@@ -121,10 +121,10 @@ table, th, td {
 
 .menubutton {
   flex: 1;
-  min-width: 30px;
+  min-width: 14px;
   max-width: 40px;
   max-height: 7vh;
-  padding: 5px;
+  padding: 0.5vh;
   text-align: center;
   border: none;
   border-radius: 0px;
@@ -132,7 +132,7 @@ table, th, td {
   cursor: pointer;
   color: #23282e;
   font-family: 'Itim', cursive;
-  font-size: 28px;	
+  font-size: clamp(16px, 5vh, 28px);
   box-shadow: none;
 }
 
@@ -169,19 +169,13 @@ table, th, td {
   max-width: 90px;
   padding: 5px;
   text-align: center;
-
-/*  border: 1px solid black;
-  border-radius: 1px;
-  background: rgba(255, 255, 255, 0.4);*/
-
   border: none;
   background: transparent;
-
   cursor: pointer;
   color: #23282e;
   font-family: 'Itim', cursive;
   font-size: 50px;	
-  /*box-shadow: #b0b0b0;*/
+  text-shadow: none;
   opacity: 0.9;
   user-select: none;
   -webkit-user-select: none; /* Safari */
@@ -974,4 +968,18 @@ span.ui-confirm-dialog-message {
   .low-ratio {
     display: none;
   }
+}
+
+@media (max-aspect-ratio: 2) {
+  .maintable {
+    max-width: 75vh;
+    top: calc(-20px + 3vh);
+    position: relative;  }
+}
+
+@media (min-aspect-ratio: 2) {
+  .maintable {
+    max-width: 90vh;
+    top: calc(-20px + 3vh);
+    position: relative;  }
 }

@@ -11,7 +11,7 @@
   <h:head>
     <title>Kezdőjátékos</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"></meta>
     <meta name="description" content="Társasjátékok kezdőjátékosának meghatározását segítő weboldal"/>
     <meta name="keywords" content="kezdojatekos,kezdőjátékos"/>
     <meta name="author" content="Tihon József"/>      
@@ -19,22 +19,65 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,200&amp;icon_names=question_exchange" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
-   
-    <style>               
+
+    <script>
+      function setVh() {
+        // A látható ablakmagasság 1%-a
+        const vh = window.innerHeight * 0.01;
+
+        // Beállítjuk a --vh CSS változót
+        vhs = vh + 'px';
+        document.documentElement.style.setProperty('--vh', vhs);
+        
+        // A --vh érték lekérdezése
+        const vhValue = getComputedStyle(document.documentElement).getPropertyValue('--vh');
+
+        // Kiíratás a konzolra
+        console.log('A --vh értéke');        
+        console.log(vhValue);        
+      }
+
+      // Frissítés betöltéskor
+      window.addEventListener('load', setVh);
+
+      let timeout;
+      function debounceSetVh() {
+        clearTimeout(timeout);
+        timeout = setTimeout(setVh, 100);  // 100 ms késleltetés
+      }
+
+      window.addEventListener('resize', debounceSetVh);
+      window.addEventListener('scroll', debounceSetVh);    
+    </script>
+    
+    <style>     
+      
+    @media (max-aspect-ratio: 2) {
       .bgimage{
         background-image:url(#{request.contextPath}/resources/images/bg-default.jpg);
         background-repeat: no-repeat;
         background-position: top;
         background-size: cover;     
-        min-height: 100vh;
+        min-height: calc(var(--vh, 1vh) * 100);
       }        
+    }
+
+    @media (min-aspect-ratio: 2) {
+      .bgimage{
+        background-image:url(#{request.contextPath}/resources/images/bg-wide.jpg);
+        background-repeat: no-repeat;
+        background-position: top;
+        background-size: cover;     
+        min-height: calc(var(--vh, 1vh) * 100);
+      }        
+    }
     </style>   
   </h:head>
   <h:body styleClass="bgimage">
     <h:outputScript library="js" name="misc.js" />
     <h:outputStylesheet library="css" name="style.css" />
 
-    <h:form id="pageform" acceptcharset="UTF-8" enctype="multipart/form-data">
+    <h:form id="pageform" style="height: 100%;" acceptcharset="UTF-8" enctype="multipart/form-data">
       <!--      <div class="header">
               <h1>Kezdőjátékos</h1>
             </div>        -->
@@ -43,7 +86,8 @@
                                         background-repeat: no-repeat;
                                         background-position: top;
                                         background-size: cover;     
-                                        min-height: 100vh;
+                                        height: 100%;
+                                        min-height: calc(var(--vh, 1vh) * 100);
                                         transition: background-image 1s ease-in-out;
                                         display: flex;
                                         align-items: stretch;">
@@ -283,12 +327,13 @@
                          action="#{gameManager.setAdminPage(true)}">
           <f:ajax render="pg_full"/>
         </h:commandButton>
-        <h:panelGroup id="pg_welcome" style="flex-grow: 1;" rendered="#{gameManager.getQuestionIndex() == 0 and gameManager.adminPage == false}">
+        
+        <h:panelGroup id="pg_welcome" style="flex-grow: 1;height: 100%;" rendered="#{gameManager.getQuestionIndex() == 0 and gameManager.adminPage == false}">
           <p align="center"  class="fullpg">
-            <table id="tblStart" align="center" style="width:96%; height: 100%; max-width: 75vh; line-height: 1.5; margin: auto;">
-              <tr style="height: 6%;">
-                <td style="text-align: center; padding: 5px; ">  
-                  <div style="display: flex; justify-content: space-around; max-width: 500px;margin: auto;padding-bottom: 6px; border-bottom: 0px solid black;">
+            <table id="tbl_welcome" class="maintable"  align="center" style="width:96%; height: 100%; max-width: 75vh; line-height: 1.5; margin: auto;">
+              <tr style="height: 6%;width:100%;">
+                <td style="text-align: center; padding: 5px; width:100%;">  
+                  <div style="display: flex; justify-content: space-around; width: 90%;margin: auto;padding-bottom: 6px; border-bottom: 0px solid black;">
                     <p:commandButton id="btn_wmenu1" class="menubutton fas fa-cog" value="" onclick="PF('sidebar_settings').show()"></p:commandButton>
                     <p:commandButton id="btn_wmenu2" class="menubutton fas fa-users-cog" value="" 
                                      disabled="false" onclick="PF('sidebar_players').show()"></p:commandButton>
@@ -309,7 +354,7 @@
                     <p class="starttext center" style="max-width: 500px;">
                       KI KEZDJE A JÁTÉKOT?<br/><br/>
                       DÖNTSÉTEK EL <br/>
-                      EGY ÉRDEKES KÉRDÉSSEL!<br/><br/><br/>
+                      EGY ÉRDEKES KÉRDÉSSEL!<br/><br/>
                     </p>
                   </div>
                 </td>
@@ -347,12 +392,12 @@
           </p>    
         </h:panelGroup>
 
-        <h:panelGroup id="pg_game" style="flex-grow: 1;" rendered="#{gameManager.getQuestionIndex() gt 0 and gameManager.adminPage == false}">
+        <h:panelGroup id="pg_game" style="flex-grow: 1;height: 100%;" rendered="#{gameManager.getQuestionIndex() gt 0 and gameManager.adminPage == false}">
           <p align="center">
-            <table id="tblStart" align="center" class="starttext" style="width:96%; height: 100%; max-width: 75vh; line-height: 1.5; margin: auto;">
-              <tr style="height: 6%;">
-                <td style="text-align: center; padding: 5px; ">  
-                  <div style="display: flex; justify-content: space-around; max-width: 500px;margin: auto;padding-bottom: 6px; border-bottom: 0px solid black;">
+            <table id="tbl_game" align="center" class="starttext maintable" style="width:96%; height: 100%; line-height: 1.5; margin: auto;">
+              <tr style="height: 6%;width:100%;">
+                <td style="text-align: center; padding: 5px;width:100%;">  
+                  <div style="display: flex; justify-content: space-around; width: 90%;margin: auto;padding-bottom: 6px; border-bottom: 0px solid black;">
                     <p:commandButton id="btn_menu1" class="menubutton fas fa-cog" value="" onclick="PF('sidebar_settings').show()"></p:commandButton>
                     <p:commandButton id="btn_menu2" class="menubutton fas fa-user-check" value="" 
                                      disabled="#{gameManager.currentPlayers.size() eq 0}" onclick="PF('sidebar_result').show()"></p:commandButton>
@@ -383,7 +428,11 @@
                 <td>
                   <div style="height: 100%;position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center;">
                     <p class="center" style="max-width: 500px;">
-                      <div style="line-height: 5vh; max-width: 85%;">
+                      <h:panelGroup rendered="#{gameManager.getLastQuestionExplanation().length() gt 0}">
+                      <br/>
+                      </h:panelGroup>
+
+                      <div style="line-height: max(120%, 5vh); max-width: 85%;">
                       <h:outputText id="ot_question" value="#{gameManager.getLastQuestionText()}" class="#{gameManager.getLastQuestionClass()}"/>
 
                       <script>splitQuestionToLetters();</script>
@@ -391,7 +440,7 @@
                       </div>
                       <h:panelGroup id="pg_explanation" style="display: flex; justify-content: center;" 
                                     rendered="#{gameManager.getLastQuestionExplanation().length() gt 0}">
-                      <div style="line-height: 4vh; max-width: 85%;">
+                      <div style="line-height: max(110%, 4vh); max-width: 85%;">
                       <br/>
                       <h:outputText id="ot_explanation" class="#{gameManager.getLastQuestionExplanationClass()}" value="#{gameManager.getLastQuestionExplanation()}"/>
                       </div>
@@ -429,7 +478,7 @@
                                        style="width:190px; padding: 5px;max-width: 25vh; max-height:12vh;
                                               text-align: left; padding-left: min(5vh + 12px, 85px); padding-top: 0px; margin-right: 5vh;
                                               background-size: contain; background-repeat: no-repeat; background-position: left center;
-                                              background-image: url(#{resource['images/handshake-icon.png']});font-size: 3vh;" value="MEGVAN&#x2028;A&nbsp;KEZDŐ">
+                                              background-image: url(#{resource['images/handshake-icon.png']});font-size: max(3vh, 10px);" value="MEGVAN&#x2028;A&nbsp;KEZDŐ">
                         <p:confirm header="Megerősítés" message="Lezárod ezt a fordulót és visszatérsz a kezdőoldalra?"/>
                       </p:commandButton>
 
@@ -438,10 +487,10 @@
                                        update="pg_full"
                                        process="@this"
                                        onstart="animateLettersDisappear();  setTimeout(() => PrimeFaces.ab({source: 'pageform:btn_newq2', update: 'pageform:pg_full'}), 1500); return false;"
-                                       style="width:175px; padding: 5px;max-width: 22vh; max-height:12vh;
+                                       style="width:175px; padding: 5px;max-width: 22vh; max-height:max(12vh, 20px);
                                               text-align: left; padding-left: min(4vh + 8px, 70px); padding-top: 0px;
                                               background-size: contain; background-repeat: no-repeat; background-position: left center;
-                                              background-image: url(#{resource['images/newquestion-icon.png']});font-size: 3vh;" value="&nbsp;&nbsp;&nbsp;&nbsp;ÚJ KÉRDÉS">
+                                              background-image: url(#{resource['images/newquestion-icon.png']});font-size: max(3vh, 10px);" value="&nbsp;&nbsp;&nbsp;&nbsp;ÚJ KÉRDÉS">
                       </p:commandButton>
                     </div>
                   </div>
