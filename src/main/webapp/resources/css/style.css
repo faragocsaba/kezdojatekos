@@ -973,13 +973,13 @@ span.ui-confirm-dialog-message {
 @media (max-aspect-ratio: 2) {
   .maintable {
     max-width: 75vh;
-    top: calc(-20px + 3vh);
+    top: calc(-25px + 3vh);
     position: relative;  }
 }
 
 @media (min-aspect-ratio: 2) {
   .maintable {
     max-width: 90vh;
-    top: calc(-20px + 3vh);
+    top: calc(-25px + 3vh);
     position: relative;  }
 }
