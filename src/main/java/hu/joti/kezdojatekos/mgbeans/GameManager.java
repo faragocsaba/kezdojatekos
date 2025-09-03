@@ -31,6 +31,8 @@ public class GameManager implements Serializable {
   QuestionManager questionManager;
 
   private List<Question> recentQuestions;
+  private List<Question> excludedQuestions;
+
   private List<Player> currentPlayers;
   private Question lastQuestion;
   private Part file;
@@ -48,10 +50,12 @@ public class GameManager implements Serializable {
   
   // Az összes kérdés hány százalékának kell elfogynia ahhoz, hogy egy kérdés ismét előfordulhasson
   private static final double QUESTION_REPEAT_RATE = 0.3;
+  private static final int MAX_QUESTION_DISPLAY = 100;
   private static final Logger LOGGER = LogManager.getLogger(GameManager.class.getName());
 
   public GameManager() {
     recentQuestions = new ArrayList<>();
+    excludedQuestions = new ArrayList<>();
     currentPlayers = new ArrayList<>();
     lastQuestion = null;
 
@@ -115,12 +119,12 @@ public class GameManager implements Serializable {
       List<Question> availQuestions = new ArrayList<>(questionManager.getActiveQuestions(noEquivocal, addIndiscreet, onlyChildfriendly));
       int allSize = availQuestions.size();
 
-      for (Question question : recentQuestions) {
+      for (Question question : excludedQuestions) {
         availQuestions.removeIf(b -> b.getId() == question.getId());
       }
 
-      availQuestions.removeAll(recentQuestions);
-      LOGGER.debug("Összes: " + allSize + ", megkérdezve: " + recentQuestions.size() + ", elérhető: " + availQuestions.size());
+      availQuestions.removeAll(excludedQuestions);
+      LOGGER.debug("Összes: " + allSize + ", megkérdezve: " + excludedQuestions.size() + ", elérhető: " + availQuestions.size());
 
       Map<Integer, Integer> wQMap = new TreeMap<>();
       for (int qIndex = 0; qIndex < availQuestions.size(); qIndex++) {
@@ -159,24 +163,46 @@ public class GameManager implements Serializable {
       lastQuestion.setPlayers(currentPlayers);
       lastQuestion.setWinners(new HashSet<>());
       recentQuestions.add(lastQuestion);
+      excludedQuestions.add(lastQuestion);
       questionIndex++;
       
       LOGGER.debug("Ismétlődési határ: " + ((int)(QUESTION_REPEAT_RATE * allSize)));
-      if (recentQuestions.size() > (int)(QUESTION_REPEAT_RATE * allSize)){
-        int qIndex = 0;
-        do {
-          if ( (recentQuestions.get(qIndex).isUnequivocal() || !noEquivocal)
-            && (!recentQuestions.get(qIndex).isIndiscreet() || addIndiscreet)
-            && (recentQuestions.get(qIndex).isChildfriendly() || !onlyChildfriendly) )        {
-            LOGGER.debug("Kérdés ismét jöhet: " + recentQuestions.get(qIndex).getText());
-            recentQuestions.remove(qIndex);
-            questionIndex--;
-            qIndex = -1;
-          } else {
-            qIndex++;
-          }
-        } while (qIndex >= 0 && qIndex < recentQuestions.size());
+      
+      int filteredQuestionNum = 0;
+      for (Question q : excludedQuestions) {
+        if ( (q.isUnequivocal() || !noEquivocal) && (!q.isIndiscreet() || addIndiscreet) && (q.isChildfriendly() || !onlyChildfriendly) ) {
+          filteredQuestionNum++; 
+        }
       }
+
+      int removeNum = filteredQuestionNum - (int)(QUESTION_REPEAT_RATE * allSize);
+      int qIndex = 0;
+      while (removeNum > 0 && qIndex < recentQuestions.size()){
+        if ( (excludedQuestions.get(qIndex).isUnequivocal() || !noEquivocal)
+          && (!excludedQuestions.get(qIndex).isIndiscreet() || addIndiscreet)
+          && (excludedQuestions.get(qIndex).isChildfriendly() || !onlyChildfriendly) ) {
+            LOGGER.debug("Kérdés ismét jöhet: " + excludedQuestions.get(qIndex).getText());
+            excludedQuestions.remove(qIndex);
+            removeNum--;
+        } else {
+            qIndex++;
+        }
+      }
+      
+      removeNum = recentQuestions.size() - MAX_QUESTION_DISPLAY;
+      LOGGER.debug("lastdeciderseq: " + lastDeciderSeq);
+      for (int i = 0; i < removeNum; i++) {
+        if (recentQuestions.get(0).getSeq() <= lastDeciderSeq){
+          LOGGER.debug("Kérdés már nem jelenik meg: " + recentQuestions.get(0).getSeq());
+          LOGGER.debug("Kérdés már nem jelenik meg: " + recentQuestions.get(0).getText());
+          recentQuestions.remove(0);
+          questionIndex--;
+        }  
+      }
+      
+      LOGGER.debug("Tiltott kérdések: " + excludedQuestions.size());
+      LOGGER.debug("Látható kérdések: " + recentQuestions.size());
+      
     }  
   };
   
@@ -331,6 +357,14 @@ public class GameManager implements Serializable {
 
   public void setRecentQuestions(List<Question> recentQuestions) {
     this.recentQuestions = recentQuestions;
+  }
+
+  public List<Question> getExcludedQuestions() {
+    return excludedQuestions;
+  }
+
+  public void setExcludedQuestions(List<Question> excludedQuestions) {
+    this.excludedQuestions = excludedQuestions;
   }
 
   public int getQuestionIndex() {
